@@ -1,0 +1,86 @@
+/**
+ * Milestone D2B — sticky purchase bar (mobile only).
+ */
+
+.bp-pdp-sticky {
+	display: none;
+}
+
+@media (max-width: 767px) {
+	.bp-pdp-sticky:not([hidden]) {
+		display: block;
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: var(--bp-z-sticky-bar, 100);
+		background: var(--bp-color-surface, #fff);
+		box-shadow: var(--bp-shadow-elevated, 0 4px 12px rgba(0, 0, 0, 0.12));
+		padding: var(--bp-space-3, 12px) var(--bp-space-4, 16px);
+		padding-bottom: calc(var(--bp-space-3, 12px) + env(safe-area-inset-bottom, 0px));
+		border-top: 1px solid var(--bp-color-border, rgba(0, 0, 0, 0.08));
+	}
+
+	.bp-pdp-sticky__inner {
+		display: flex;
+		align-items: center;
+		gap: var(--bp-space-3, 12px);
+		max-width: 720px;
+		margin: 0 auto;
+	}
+
+	.bp-pdp-sticky__info {
+		flex: 1 1 auto;
+		min-width: 0;
+	}
+
+	.bp-pdp-sticky__price {
+		font-size: var(--bp-text-price-size, 1.125rem);
+		font-weight: var(--bp-text-price-weight, 600);
+		line-height: var(--bp-text-price-line, 1.2);
+	}
+
+	.bp-pdp-sticky__meta {
+		font-size: var(--bp-text-meta-size, 0.8125rem);
+		line-height: var(--bp-text-meta-line, 1.4);
+		color: var(--bp-color-text-muted, #666);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.bp-pdp-sticky__atc {
+		flex: 0 0 auto;
+		min-height: var(--bp-touch-min, 44px);
+		min-width: 44px;
+		padding: 0 var(--bp-space-4, 16px);
+		border: 0;
+		border-radius: var(--bp-radius-button, 8px);
+		background: var(--bp-color-primary, #0066cc);
+		color: #fff;
+		font-size: var(--bp-text-label-size, 0.875rem);
+		font-weight: var(--bp-text-label-weight, 500);
+		cursor: pointer;
+	}
+
+	.bp-pdp-sticky__atc:disabled {
+		opacity: 0.55;
+		cursor: not-allowed;
+	}
+
+	.bp-pdp-sticky__atc:focus-visible {
+		outline: 2px solid var(--bp-color-primary, #0066cc);
+		outline-offset: 2px;
+	}
+
+	/* Reserve space so content isn't hidden under the bar when visible */
+	body.single-product.bp-pdp-sticky-active {
+		padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.bp-pdp-sticky {
+		transition: none !important;
+	}
+}

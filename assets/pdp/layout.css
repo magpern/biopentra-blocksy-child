@@ -1,0 +1,133 @@
+/**
+ * Milestone D2A — Product Detail Layout polish.
+ *
+ * Related/upsell visibility, SDS price/stock typography, trust/disclaimer
+ * spacing, responsive summary layout. Sticky bar is D2B (not here).
+ */
+
+/* ── Related / upsells: unhide on mobile + tablet (Blocksy defaults hide) ── */
+body.single-product section.related.products.ct-hidden-sm,
+body.single-product section.related.products.ct-hidden-md,
+body.single-product section.up-sells.ct-hidden-sm,
+body.single-product section.up-sells.ct-hidden-md,
+body.single-product section.upsells.ct-hidden-sm,
+body.single-product section.upsells.ct-hidden-md,
+body.single-product section.cross-sells.ct-hidden-sm,
+body.single-product section.cross-sells.ct-hidden-md {
+	display: block !important;
+}
+
+body.single-product section.related.products,
+body.single-product section.up-sells,
+body.single-product section.upsells,
+body.single-product section.cross-sells {
+	margin-top: var(--bp-space-7, 48px);
+	margin-bottom: var(--bp-space-5, 24px);
+}
+
+body.single-product section.related.products > h2,
+body.single-product section.up-sells > h2,
+body.single-product section.upsells > h2 {
+	font-size: var(--bp-text-h2-size, 1.375rem);
+	line-height: var(--bp-text-h2-line, 1.25);
+	font-weight: var(--bp-text-h2-weight, 600);
+	margin-bottom: var(--bp-space-4, 16px);
+}
+
+/* ── Title / price / stock ── */
+body.single-product .summary .product_title {
+	font-size: var(--bp-text-h1-size, 1.75rem);
+	line-height: var(--bp-text-h1-line, 1.2);
+	font-weight: var(--bp-text-h1-weight, 700);
+	margin-bottom: var(--bp-space-3, 12px);
+}
+
+body.single-product .summary p.price,
+body.single-product .summary .woocommerce-variation-price .price {
+	font-size: var(--bp-text-price-size, 1.125rem);
+	line-height: var(--bp-text-price-line, 1.2);
+	font-weight: var(--bp-text-price-weight, 600);
+	margin-bottom: var(--bp-space-3, 12px);
+}
+
+body.single-product .summary .stock,
+body.single-product .summary .woocommerce-variation-availability,
+body.single-product .summary .bp-stock-status {
+	font-size: var(--bp-text-meta-size, 0.8125rem);
+	line-height: var(--bp-text-meta-line, 1.4);
+	margin-bottom: var(--bp-space-3, 12px);
+}
+
+/* Keep variation availability visible above the fold after CVSS auto-select */
+body.single-product .summary .woocommerce-variation-availability {
+	min-height: 1.25em;
+}
+
+/* ── Quantity + ATC touch targets ── */
+body.single-product .summary .quantity .qty,
+body.single-product .summary .single_add_to_cart_button {
+	min-height: var(--bp-touch-min, 44px);
+}
+
+body.single-product .summary .single_add_to_cart_button {
+	min-width: 44px;
+	padding-inline: var(--bp-space-5, 24px);
+	border-radius: var(--bp-radius-button, 8px);
+}
+
+body.single-product .summary .variations select,
+body.single-product .summary .variations .reset_variations {
+	min-height: var(--bp-touch-min, 44px);
+}
+
+/* ── Trust / meta / disclaimer placement ── */
+body.single-product .summary .product_meta {
+	font-size: var(--bp-text-meta-size, 0.8125rem);
+	color: var(--bp-color-text-muted, #666);
+	margin-top: var(--bp-space-4, 16px);
+	padding-top: var(--bp-space-3, 12px);
+	border-top: 1px solid var(--bp-color-border, rgba(0, 0, 0, 0.08));
+}
+
+body.single-product .woocommerce-tabs {
+	margin-top: var(--bp-space-6, 32px);
+}
+
+body.single-product .woocommerce-Tabs-panel--description,
+body.single-product #tab-description {
+	font-size: var(--bp-text-body-size, 1rem);
+	line-height: var(--bp-text-body-line, 1.5);
+}
+
+/* Research-use disclaimer often lives in description — keep crawlable, spaced */
+body.single-product .woocommerce-Tabs-panel--description p:last-child {
+	margin-bottom: 0;
+}
+
+/* ── Responsive entry layout ── */
+@media (max-width: 767px) {
+	body.single-product .product-entry-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: var(--bp-space-4, 16px);
+	}
+
+	body.single-product .summary .ct-product-add-to-cart {
+		margin-top: var(--bp-space-3, 12px);
+	}
+
+	body.single-product section.related ul.products,
+	body.single-product section.up-sells ul.products,
+	body.single-product section.upsells ul.products {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--bp-space-4, 16px);
+	}
+}
+
+@media (min-width: 768px) {
+	body.single-product .summary p.price,
+	body.single-product .summary .woocommerce-variation-price .price {
+		font-size: var(--bp-text-price-size, 1.25rem);
+	}
+}
