@@ -1,0 +1,74 @@
+/**
+ * Milestone D1 / D2A — PDP gallery image discipline (Blocksy Flexy).
+ *
+ * Caps gallery height, disables sticky gallery on mobile, ensures
+ * thumbnail touch targets, preserves zoom/lightbox behaviour.
+ */
+
+/* Gallery height caps */
+body.single-product .ct-product-gallery-container,
+body.single-product .woocommerce-product-gallery {
+	max-height: var(--bp-pdp-gallery-max-h-mobile, 50vh);
+}
+
+body.single-product .woocommerce-product-gallery__wrapper,
+body.single-product .woocommerce-product-gallery .flexy-items,
+body.single-product .woocommerce-product-gallery .flexy-container,
+body.single-product .woocommerce-product-gallery .ct-media-container {
+	max-height: inherit;
+}
+
+body.single-product .woocommerce-product-gallery img {
+	max-height: var(--bp-pdp-gallery-max-h-mobile, 50vh);
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	object-fit: contain;
+	margin-inline: auto;
+}
+
+/* Disable sticky gallery on mobile (SDS / image-guidelines) */
+@media (max-width: 767px) {
+	body.single-product .ct-product-gallery-container,
+	body.single-product .product-entry-wrapper > .ct-product-gallery-container,
+	body.single-product .woocommerce-product-gallery {
+		position: static !important;
+		top: auto !important;
+	}
+}
+
+@media (min-width: 768px) {
+	body.single-product .ct-product-gallery-container,
+	body.single-product .woocommerce-product-gallery {
+		max-height: var(--bp-pdp-gallery-max-h-desktop, 520px);
+	}
+
+	body.single-product .woocommerce-product-gallery img {
+		max-height: var(--bp-pdp-gallery-max-h-desktop, 520px);
+	}
+}
+
+/* Thumbnails — touch-safe */
+body.single-product .flexy-pills,
+body.single-product .flexy-pills img,
+body.single-product .flexy-pills button,
+body.single-product .woocommerce-product-gallery .flexy-pills span {
+	min-width: var(--bp-pdp-thumb-min, 44px);
+	min-height: var(--bp-pdp-thumb-min, 44px);
+}
+
+body.single-product .flexy-pills {
+	gap: var(--bp-space-2, 8px);
+	margin-top: var(--bp-space-3, 12px);
+}
+
+/* Spacing around gallery vs summary */
+body.single-product .product-entry-wrapper {
+	gap: var(--bp-space-5, 24px);
+}
+
+@media (max-width: 767px) {
+	body.single-product .product-entry-wrapper {
+		gap: var(--bp-space-4, 16px);
+	}
+}
