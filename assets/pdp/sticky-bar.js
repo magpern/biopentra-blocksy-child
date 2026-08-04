@@ -39,6 +39,23 @@
 		document.body.classList.add('bp-pdp-sticky-active');
 	}
 
+	/** Debounced hide — avoids IO flicker stealing focus from the sticky ATC. */
+	var hideTimer = null;
+	function setVisibleDebounced(show) {
+		if (hideTimer) {
+			clearTimeout(hideTimer);
+			hideTimer = null;
+		}
+		if (show) {
+			setVisible(true);
+			return;
+		}
+		hideTimer = setTimeout(function () {
+			hideTimer = null;
+			setVisible(false);
+		}, 150);
+	}
+
 	function syncPrice() {
 		var el = bar();
 		if (!el) {
@@ -97,14 +114,19 @@
 		}
 
 		var disabled = native.disabled || native.classList.contains('disabled');
-		btn.disabled = disabled;
+		// Only mutate when changed — toggling disabled drops keyboard focus (flake cause).
+		if (btn.disabled !== disabled) {
+			btn.disabled = disabled;
+		}
 
 		var label = (native.textContent || '').trim() || i18n.addToCart || 'Add to cart';
 		var vidInput = document.querySelector('form.variations_form input.variation_id');
 		if (disabled && vidInput && (!vidInput.value || vidInput.value === '0')) {
 			label = i18n.selectOpts || 'Select options';
 		}
-		btn.textContent = label;
+		if (btn.textContent !== label) {
+			btn.textContent = label;
+		}
 	}
 
 	function syncAll() {
@@ -140,7 +162,7 @@
 		var io = new IntersectionObserver(
 			function (entries) {
 				entries.forEach(function (entry) {
-					setVisible(!entry.isIntersecting);
+					setVisibleDebounced(!entry.isIntersecting);
 				});
 			},
 			{ root: null, threshold: 0.2, rootMargin: '0px' }
