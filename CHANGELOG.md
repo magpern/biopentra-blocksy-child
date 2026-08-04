@@ -1,5 +1,13 @@
 # Changelog — Biopentra Blocksy Child
 
+## [1.1.0] - 2026-08-04
+
+### Added
+
+- **Milestone D2A:** PDP layout/gallery CSS — gallery height caps; related/upsell unhide on small viewports; ATC touch targets.
+- **Milestone D2B:** mobile sticky purchase bar (`inc/pdp-sticky-bar/`) with focus-safe ATC sync and debounced IO hide.
+- Dev bind-mount documented in `docs/DEV-SYNC.md` (same pattern as first-party plugins).
+
 ## [1.0.0] - 2026-08-01
 
 ### Added
