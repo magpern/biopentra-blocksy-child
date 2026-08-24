@@ -1,5 +1,16 @@
 # Changelog — Biopentra Blocksy Child
 
+## [1.2.9] - 2026-08-24
+
+### Added
+
+- **PDP-1 — Expanded Product Page Redesign:** purchase-panel visual treatment (`assets/pdp/purchase-panel.css`) — border/radius/shadow surface, eyebrow, icon + two-line trust row, availability checkmark restyle, metadata label alignment, bold variation attribute label, variation "Clear" link suppression; gallery hover-zoom removed (scoped `.zoomImg` suppression); tabs (Description/Additional Information) styling (`assets/pdp/tabs.css`); thumbnail-strip clipping fixed at root cause, centered + tightened spacing, sticky gallery explicitly disabled (`assets/pdp/gallery.css`). Companion PHP module: `biopentra-custom-plugins` `plugins/biopentra-storefront/modules/pdp-purchase-panel/`.
+- Intermediate point releases during this session (`1.1.4`, `1.1.5`, `1.1.8`, `1.1.9`, `1.2.3`) — cache-busting/incremental fixes, not separately tagged; `1.2.9` is this milestone's closure release. Plan: `biopentra-custom-plugins/docs/storefront-redesign/plans/PDP-1_PURCHASE_SUMMARY_REDESIGN.md`. Change record: `biopentra-custom-plugins/docs/storefront-redesign/changes/pdp-1-product-page-redesign.md`.
+
+### Notes
+
+- Rollback baseline: `1.1.0`.
+
 ## [1.1.0] - 2026-08-04
 
 ### Added
