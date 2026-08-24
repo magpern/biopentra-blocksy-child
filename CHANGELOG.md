@@ -1,5 +1,16 @@
 # Changelog — Biopentra Blocksy Child
 
+## [1.2.10] - 2026-08-24
+
+### Fixed
+
+- **PDP-1 accessibility corrective:** `.bp-pdp-meta-label` (SKU/Category/Tags labels in the purchase-panel metadata) failed WCAG AA contrast (measured 2.97:1, required 4.5:1). Root cause: Blocksy's native `.product_meta > span > *` rule applies `opacity:.7` to every direct child, including this label span, dragging `var(--bp-color-text-muted, #666)` (~5.7:1 at full opacity) under the AA floor. Fixed with a scoped `opacity: 1` reset on `.bp-pdp-meta-label` only — value text keeps Blocksy's native muted treatment untouched, no other metadata/typography/layout changed.
+- Found during PDP-1 final closure verification (real axe-core/Playwright run); `1.2.9` did not pass final accessibility verification — `1.2.10` is the corrected, final PDP-1 theme baseline. See `biopentra-custom-plugins/docs/storefront-redesign/changes/pdp-1-product-page-redesign.md`.
+
+### Notes
+
+- Rollback baseline unchanged: `1.1.0`. `1.2.9` remains an immutable historical tag (pre-corrective).
+
 ## [1.2.9] - 2026-08-24
 
 ### Added

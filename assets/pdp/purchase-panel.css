@@ -173,6 +173,12 @@ body.single-product .summary .product_meta > span:last-child {
 	margin-bottom: 0;
 }
 
+/* Blocksy's native `.product_meta > span > *` rule applies opacity:.7 to
+   every direct child, including this label span — fine for the native
+   theme's own text color, but it drags var(--bp-color-text-muted, #666)
+   (already ~5.7:1 at full opacity) under the 4.5:1 AA contrast floor.
+   Scoped opacity reset, label only — the value text keeps Blocksy's
+   native muted treatment untouched. */
 body.single-product .summary .bp-pdp-meta-label {
 	flex: 0 0 110px;
 	text-transform: uppercase;
@@ -180,6 +186,7 @@ body.single-product .summary .bp-pdp-meta-label {
 	font-weight: 600;
 	color: var(--bp-color-text-muted, #666);
 	font-size: var(--bp-text-meta-size, 0.8125rem);
+	opacity: 1;
 }
 
 
