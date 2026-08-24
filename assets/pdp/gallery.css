@@ -1,28 +1,39 @@
 /**
  * Milestone D1 / D2A — PDP gallery image discipline (Blocksy Flexy).
  *
- * Caps gallery height, disables sticky gallery on mobile, ensures
- * thumbnail touch targets, preserves zoom/lightbox behaviour.
+ * Caps main-image height, disables sticky gallery, ensures thumbnail
+ * touch targets, preserves zoom/lightbox behaviour.
  */
 
-/* Gallery height caps. The outer container's cap must budget extra room
-   for the thumbnail strip (.flexy-pills, PO decision 2026-08-24) — it was
-   originally sized for the main image alone, so with overflow:hidden the
-   thumbnail row was silently clipped off the bottom whenever a product had
-   more than one image (verified live on product 6452, 2 real images). The
-   main image itself (below, .woocommerce-product-gallery img) keeps the
-   exact same cap as before — this only gives the OUTER box extra headroom,
-   it never grows the photo itself. */
+/* Sticky gallery disabled everywhere (PO decision, 2026-08-24 — supersedes
+   the mobile-only D1/D2A rule below). Root-caused a cluster of thumbnail-
+   gallery bugs: Blocksy's `.woocommerce-product-gallery` is natively both
+   `position:sticky` and `overflow:hidden` on the same element — a known
+   CSS trap where a sticky element's own overflow:hidden, combined with a
+   height that content (main image + thumbnail strip) can exceed, silently
+   clips content instead of growing, AND breaks the normal expectation that
+   later page sections (e.g. "Related products") reflow to start after the
+   element's actual rendered height. No amount of max-height tuning on the
+   sticky element fixes this correctly — removing sticky does. */
 body.single-product .ct-product-gallery-container,
+body.single-product .product-entry-wrapper > .ct-product-gallery-container,
 body.single-product .woocommerce-product-gallery {
-	max-height: calc(var(--bp-pdp-gallery-max-h-mobile, 50vh) + 90px);
+	position: static !important;
+	top: auto !important;
 }
 
+/* Main image height cap — the photo itself. Deliberately excludes
+   .flexy-container: Blocksy's flexy.js carousel re-parents .flexy-pills
+   at runtime to become a CHILD of .flexy-container (not a sibling, as the
+   server-rendered HTML shows) — capping .flexy-container here was
+   clipping the relocated thumbnail strip against its own new direct
+   parent, regardless of anything done to the outer wrapper above. Found
+   by tracing .flexy-pills.parentElement live in the browser; not visible
+   in the static/compiled theme CSS. */
 body.single-product .woocommerce-product-gallery__wrapper,
 body.single-product .woocommerce-product-gallery .flexy-items,
-body.single-product .woocommerce-product-gallery .flexy-container,
-body.single-product .woocommerce-product-gallery .ct-media-container {
-	max-height: inherit;
+body.single-product .woocommerce-product-gallery .ct-media-container:not(.flexy-pills *) {
+	max-height: var(--bp-pdp-gallery-max-h-mobile, 50vh);
 }
 
 body.single-product .woocommerce-product-gallery img {
@@ -34,20 +45,11 @@ body.single-product .woocommerce-product-gallery img {
 	margin-inline: auto;
 }
 
-/* Disable sticky gallery on mobile (SDS / image-guidelines) */
-@media (max-width: 767px) {
-	body.single-product .ct-product-gallery-container,
-	body.single-product .product-entry-wrapper > .ct-product-gallery-container,
-	body.single-product .woocommerce-product-gallery {
-		position: static !important;
-		top: auto !important;
-	}
-}
-
 @media (min-width: 768px) {
-	body.single-product .ct-product-gallery-container,
-	body.single-product .woocommerce-product-gallery {
-		max-height: calc(var(--bp-pdp-gallery-max-h-desktop, 520px) + 130px);
+	body.single-product .woocommerce-product-gallery__wrapper,
+	body.single-product .woocommerce-product-gallery .flexy-items,
+	body.single-product .woocommerce-product-gallery .ct-media-container:not(.flexy-pills *) {
+		max-height: var(--bp-pdp-gallery-max-h-desktop, 520px);
 	}
 
 	body.single-product .woocommerce-product-gallery img {
@@ -55,13 +57,40 @@ body.single-product .woocommerce-product-gallery img {
 	}
 }
 
-/* Thumbnails — touch-safe */
+/* Main image sits in a fixed-aspect-ratio box (Blocksy's own default
+   product ratio); object-fit:contain letterboxes any photo that doesn't
+   match that ratio exactly, and on a plain white page background that
+   letterboxing reads as an unexplained gap before the thumbnails. A
+   card frame — matching the purchase panel's own visual language —
+   makes that space read as the intentional photo frame instead. */
+body.single-product .woocommerce-product-gallery .ct-media-container:not(.flexy-pills *) {
+	border: 1px solid var(--bp-color-border, rgba(0, 0, 0, 0.08));
+	border-radius: var(--bp-radius-card, 12px);
+	background: var(--bp-color-surface, #fff);
+	overflow: hidden;
+}
+
+/* Thumbnails — touch-safe, and capped to a fixed size (PO decision,
+   2026-08-24). Blocksy sizes each thumbnail as a percentage of the
+   gallery column's width, so on wide desktop viewports they'd otherwise
+   grow well past a modest, expected size. A fixed max-width/height keeps
+   them consistent on every screen. */
 body.single-product .flexy-pills,
 body.single-product .flexy-pills img,
 body.single-product .flexy-pills button,
 body.single-product .woocommerce-product-gallery .flexy-pills span {
 	min-width: var(--bp-pdp-thumb-min, 44px);
 	min-height: var(--bp-pdp-thumb-min, 44px);
+}
+
+body.single-product .flexy-pills li {
+	max-width: 100px;
+}
+
+body.single-product .flexy-pills .ct-media-container,
+body.single-product .flexy-pills img {
+	max-width: 100px;
+	max-height: 100px;
 }
 
 body.single-product .flexy-pills ol,
@@ -80,15 +109,22 @@ body.single-product .flexy-pills {
    rail (.flexy-pills) and lightbox/zoom mechanics are unchanged, this only
    restyles the existing active-thumbnail ring (.ct-media-container:after,
    native) to use BioPentra's palette + a rounded corner instead of
-   Blocksy's default dark/square ring. No products currently have more than
-   one image, so the rail itself is not visible today — verified on a
-   temporary duplicated-image test, reverted after confirming the CSS. */
+   Blocksy's default dark/square ring. */
 body.single-product .woocommerce-product-gallery .flexy-pills .ct-media-container {
 	border-radius: var(--bp-radius-sm, 4px);
 }
 
+/* Blocksy's native ring (.ct-media-container:after, a semi-transparent
+   border with a soft transition) reads as embossed rather than a crisp
+   "selected" state — disable it for the active thumbnail and use a flat
+   outline instead. */
 body.single-product .woocommerce-product-gallery .flexy-pills li.active .ct-media-container:after {
-	border-color: var(--bp-color-primary, #0066cc);
+	border-color: transparent;
+}
+
+body.single-product .woocommerce-product-gallery .flexy-pills li.active .ct-media-container {
+	outline: 2px solid var(--bp-color-primary, #0066cc);
+	outline-offset: -1px;
 }
 
 /* Spacing around gallery vs summary */
