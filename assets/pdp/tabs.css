@@ -1,0 +1,108 @@
+/**
+ * PDP-1 — Description / Additional Information tab styling.
+ *
+ * Deliberate scope exception (PO decision, 2026-08-24): PDP-1's boundaries
+ * exclude "tabs redesign"; this is a narrow styling pass on exactly the
+ * two tabs that exist on this site (Description, Additional Information),
+ * not a structural/behavioral change. Native WooCommerce tab markup and
+ * Blocksy's active-tab underline mechanics are untouched — CSS only.
+ */
+
+.wc-tabs-wrapper .tabs.wc-tabs {
+	display: flex;
+	gap: var(--bp-space-6, 32px);
+	border-bottom: 1px solid var(--bp-color-border, rgba(0, 0, 0, 0.08));
+	padding: 0;
+	margin: 0 0 var(--bp-space-5, 24px);
+}
+
+.wc-tabs-wrapper .tabs.wc-tabs li {
+	margin: 0;
+	padding: 0;
+}
+
+.wc-tabs-wrapper .tabs.wc-tabs li a {
+	display: inline-block;
+	padding-bottom: var(--bp-space-3, 12px);
+	font-size: var(--bp-text-label-size, 0.875rem);
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	color: var(--bp-color-text-muted, #666);
+}
+
+.wc-tabs-wrapper .tabs.wc-tabs li.active a {
+	color: var(--bp-color-primary, #0066cc);
+}
+
+.woocommerce-Tabs-panel--description p,
+.woocommerce-Tabs-panel--additional_information p {
+	font-size: var(--bp-text-body-size, 1rem);
+	line-height: var(--bp-text-body-line, 1.6);
+	color: var(--bp-color-text, #1a1a1a);
+	margin: 0 0 var(--bp-space-4, 16px);
+}
+
+/* Paragraph directly introducing a bullet list (e.g. "...include:") reads
+   as a sub-heading, matching the reference styling — purely structural
+   (adjacent-sibling), not content-string matching. */
+.woocommerce-Tabs-panel--description p:has(+ ul) {
+	font-weight: 700;
+	margin-bottom: var(--bp-space-3, 12px);
+}
+
+.woocommerce-Tabs-panel--description ul {
+	list-style: none;
+	margin: 0 0 var(--bp-space-4, 16px);
+	padding: 0;
+}
+
+.woocommerce-Tabs-panel--description ul li {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--bp-space-2, 8px);
+	margin-bottom: var(--bp-space-2, 8px);
+	line-height: 1.5;
+}
+
+.woocommerce-Tabs-panel--description ul li::before {
+	content: "";
+	flex: 0 0 auto;
+	width: 18px;
+	height: 18px;
+	margin-top: 0.15em;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%230066cc'/%3E%3Cpath d='M7 12.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+/* Additional Information: native product attributes table */
+.woocommerce-Tabs-panel--additional_information table.woocommerce-product-attributes {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.woocommerce-Tabs-panel--additional_information table.woocommerce-product-attributes tr {
+	border-bottom: 1px solid var(--bp-color-border, rgba(0, 0, 0, 0.08));
+}
+
+.woocommerce-Tabs-panel--additional_information table.woocommerce-product-attributes tr:last-child {
+	border-bottom: none;
+}
+
+.woocommerce-Tabs-panel--additional_information .woocommerce-product-attributes-item__label {
+	padding: var(--bp-space-3, 12px) var(--bp-space-4, 16px) var(--bp-space-3, 12px) 0;
+	text-align: left;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	font-weight: 600;
+	font-size: var(--bp-text-meta-size, 0.8125rem);
+	color: var(--bp-color-text-muted, #666);
+	width: 200px;
+}
+
+.woocommerce-Tabs-panel--additional_information .woocommerce-product-attributes-item__value {
+	padding: var(--bp-space-3, 12px) 0;
+	color: var(--bp-color-text, #1a1a1a);
+}
+
+.woocommerce-Tabs-panel--additional_information .woocommerce-product-attributes-item__value p {
+	margin: 0;
+}
