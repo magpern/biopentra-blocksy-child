@@ -45,13 +45,13 @@ body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-price
 	margin: 0 0 var(--bp-space-2, 8px);
 }
 
-/* Availability directly under price — "confirmed immediately before purchase"
-   for both asymmetric layouts: native .stock outside the panel for simple
-   products sits directly above it (see spacing rule below); native
-   .woocommerce-variation-availability sits inside the panel for variable
-   products, right under the bundled price. */
-body.single-product .summary > .stock {
-	margin: var(--bp-space-4, 16px) 0 var(--bp-space-2, 8px);
+/* Availability directly under price, inside the panel, both product types
+   (PO decision, 2026-08-24): simple's stock line is relocated via the
+   plugin's woocommerce_get_stock_html suppress/re-render pair (plain
+   template echo, no JS blob — see module PHP); variable's availability is
+   still the native bundled price+availability blob (§2.2, unchanged). */
+body.single-product .summary .bp-pdp-purchase-panel > p.stock {
+	margin: 0 0 var(--bp-space-3, 12px);
 }
 
 body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-availability {
@@ -135,10 +135,17 @@ body.single-product .summary .variations th.label label {
 	font-weight: 700;
 }
 
-/* ── Variation availability: checkmark accent for in-stock state, restyled
-   in place — kept bundled inside the panel per the atomic price/availability
-   render (plan §2.2); not relocated in the DOM. ── */
-body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-availability .stock.in-stock {
+/* ── In-stock availability: checkmark accent, shared by both product types,
+   both now rendered inside the panel (PO decision, 2026-08-24). Matched via
+   the existing product-stock-display module's inner
+   .bp-stock-status--in-stock span rather than the outer .stock.in-stock
+   class — WooCommerce's own "in-stock" CSS class also covers the
+   low-stock/"Only N left" warning state (still in-stock inventory-wise),
+   which must NOT get the checkmark; only genuine plain "In stock" gets it,
+   using :has() to require that specific inner modifier. Low-stock/only-left/
+   out-of-stock keep their existing bp-stock-status warning colors,
+   untouched. ── */
+body.single-product .summary .bp-pdp-purchase-panel .stock:has(.bp-stock-status--in-stock) {
 	display: flex;
 	align-items: center;
 	gap: var(--bp-space-2, 8px);
@@ -146,7 +153,7 @@ body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-avail
 	font-weight: 500;
 }
 
-body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-availability .stock.in-stock::before {
+body.single-product .summary .bp-pdp-purchase-panel .stock:has(.bp-stock-status--in-stock)::before {
 	content: "";
 	flex: 0 0 auto;
 	width: 16px;
