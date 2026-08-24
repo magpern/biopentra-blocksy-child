@@ -1,0 +1,215 @@
+/**
+ * PDP-1 — Purchase-summary purchase panel (WP3/WP4).
+ *
+ * Spec: docs/storefront-redesign/plans/PDP-1_PURCHASE_SUMMARY_REDESIGN.md
+ * Structural markup: biopentra-storefront/modules/pdp-purchase-panel/
+ * Tokens-only, no hardcoded values, no CSS `order` (plan §7).
+ */
+
+/* ── Eyebrow ── */
+body.single-product .summary .bp-pdp-eyebrow {
+	font-size: var(--bp-text-label-size, 0.875rem);
+	line-height: var(--bp-text-label-line, 1.2);
+	font-weight: var(--bp-text-label-weight, 500);
+	color: var(--bp-color-text-muted, #666);
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	margin: 0 0 var(--bp-space-2, 8px);
+}
+
+/* ── Purchase panel surface ── */
+body.single-product .summary .bp-pdp-purchase-panel {
+	margin-top: var(--bp-space-4, 16px);
+	padding: var(--bp-space-5, 24px);
+	background: var(--bp-color-surface, #fff);
+	border: 1px solid var(--bp-color-border, rgba(0, 0, 0, 0.08));
+	border-radius: var(--bp-radius-card, 12px);
+	box-shadow: var(--bp-shadow-card, 0 1px 3px rgba(0, 0, 0, 0.08));
+}
+
+/* Price anchor at the top of the panel (native .price, both product types) */
+body.single-product .summary .bp-pdp-purchase-panel > p.price,
+body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-price .price {
+	font-size: var(--bp-text-h2-size, 1.375rem);
+	line-height: var(--bp-text-h2-line, 1.25);
+	font-weight: 700;
+	margin: 0 0 var(--bp-space-2, 8px);
+}
+
+/* Availability directly under price — "confirmed immediately before purchase"
+   for both asymmetric layouts: native .stock outside the panel for simple
+   products sits directly above it (see spacing rule below); native
+   .woocommerce-variation-availability sits inside the panel for variable
+   products, right under the bundled price. */
+body.single-product .summary > .stock {
+	margin: var(--bp-space-4, 16px) 0 var(--bp-space-2, 8px);
+}
+
+body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-availability {
+	margin-bottom: var(--bp-space-3, 12px);
+}
+
+/* Quantity + Add to cart as one action group, ATC visually dominant.
+   Only the outer Blocksy-owned wrapper (.ct-cart-actions) is flexed —
+   .quantity keeps its own native Blocksy stepper layout untouched. */
+body.single-product .summary .bp-pdp-purchase-panel .ct-cart-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: stretch;
+	gap: var(--bp-space-3, 12px);
+	margin-top: var(--bp-space-2, 8px);
+}
+
+/* Blocksy's own narrow-viewport rule
+   (.ct-cart-actions .quantity[data-type=type-2]{--quantity-width:100px}
+   inside @media(max-width:479.98px)) leaves the stepper's calc()-based
+   padding wider than the input's content box, hiding the number entirely.
+   Same specificity as a plain `.quantity` override, so the attribute
+   selector is repeated here to win deterministically regardless of
+   stylesheet load order. Scoped to this panel only — the stepper is
+   untouched everywhere else on the site (cart, mini-cart, other product
+   pages). */
+body.single-product .summary .bp-pdp-purchase-panel .quantity[data-type] {
+	--quantity-width: 130px;
+}
+
+body.single-product .summary .bp-pdp-purchase-panel .single_add_to_cart_button {
+	flex: 1 1 auto;
+	font-weight: 600;
+	font-size: var(--bp-text-body-size, 1rem);
+}
+
+/* ── Trust row: icon + two-line copy, compact, subordinate to price/qty/ATC ── */
+body.single-product .summary .bp-pdp-trust-row {
+	list-style: none;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--bp-space-3, 12px) var(--bp-space-4, 16px);
+	margin: var(--bp-space-4, 16px) 0 0;
+	padding: var(--bp-space-3, 12px) 0 0;
+	border-top: 1px solid var(--bp-color-border, rgba(0, 0, 0, 0.08));
+}
+
+body.single-product .summary .bp-pdp-trust-row__item {
+	display: flex;
+	align-items: center;
+	gap: var(--bp-space-2, 8px);
+	flex: 1 1 auto;
+	min-width: 130px;
+}
+
+body.single-product .summary .bp-pdp-trust-row__icon {
+	flex: 0 0 auto;
+	display: inline-flex;
+	color: var(--bp-color-primary, #0066cc);
+}
+
+body.single-product .summary .bp-pdp-trust-row__text {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.25;
+}
+
+body.single-product .summary .bp-pdp-trust-row__title {
+	font-size: var(--bp-text-meta-size, 0.8125rem);
+	font-weight: 600;
+	color: var(--bp-color-text, #1a1a1a);
+}
+
+body.single-product .summary .bp-pdp-trust-row__subtitle {
+	font-size: 0.75rem;
+	color: var(--bp-color-text-muted, #666);
+}
+
+/* ── Variation attribute label (e.g. "Strength") ── */
+body.single-product .summary .variations th.label label {
+	font-weight: 700;
+}
+
+/* ── Variation availability: checkmark accent for in-stock state, restyled
+   in place — kept bundled inside the panel per the atomic price/availability
+   render (plan §2.2); not relocated in the DOM. ── */
+body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-availability .stock.in-stock {
+	display: flex;
+	align-items: center;
+	gap: var(--bp-space-2, 8px);
+	color: #1a7a3c;
+	font-weight: 500;
+}
+
+body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-availability .stock.in-stock::before {
+	content: "";
+	flex: 0 0 auto;
+	width: 16px;
+	height: 16px;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%231a7a3c'/%3E%3Cpath d='M7 12.5l3 3 7-7' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+/* ── Native metadata: label/value alignment (SKU, Category, Tags) ── */
+body.single-product .summary .product_meta > span {
+	display: flex;
+	align-items: baseline;
+	gap: var(--bp-space-3, 12px);
+	margin-bottom: var(--bp-space-2, 8px);
+}
+
+body.single-product .summary .product_meta > span:last-child {
+	margin-bottom: 0;
+}
+
+body.single-product .summary .bp-pdp-meta-label {
+	flex: 0 0 110px;
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	font-weight: 600;
+	color: var(--bp-color-text-muted, #666);
+	font-size: var(--bp-text-meta-size, 0.8125rem);
+}
+
+/* SKU has no wrapping label span (meta.php echoes "SKU:" via esc_html_e(),
+   which would double-escape an injected <span> — see the module's PHP
+   comment). Its leading label text is a bare text node, which still
+   inherits label styling from the flex row itself; the real nested .sku
+   value span is styled back to normal value treatment. Not pinned to the
+   same 110px column as the other rows, but visually consistent. */
+body.single-product .summary .product_meta > .sku_wrapper {
+	text-transform: uppercase;
+	letter-spacing: 0.03em;
+	font-weight: 600;
+	color: var(--bp-color-text-muted, #666);
+	font-size: var(--bp-text-meta-size, 0.8125rem);
+}
+
+body.single-product .summary .product_meta > .sku_wrapper .sku {
+	text-transform: none;
+	letter-spacing: normal;
+	font-weight: 400;
+	color: var(--bp-color-text, #1a1a1a);
+}
+
+/* ── Gallery hover-zoom: removed (PO decision, 2026-08-24) — Blocksy's
+   zoom.js unconditionally initializes on the live front-end (its
+   `has_product_single_zoom` theme mod is only honored inside the
+   Customizer preview, not on regular page loads), so there is no runtime
+   toggle to disable it upstream. Hiding the injected .zoomImg overlay is
+   the smallest safe suppression: it removes the visual zoom without
+   touching Blocksy core, without new JS, and without affecting the
+   separate lightbox-click feature. Deliberate scope exception to the
+   "gallery stays frozen" rule per explicit PO direction. ── */
+body.single-product .woocommerce-product-gallery img.zoomImg {
+	display: none !important;
+}
+
+/* ── Responsive: aligns with the real Blocksy split (< 1000px stacked) ── */
+@media (max-width: 999px) {
+	body.single-product .summary .bp-pdp-purchase-panel {
+		padding: var(--bp-space-4, 16px);
+	}
+}
+
+@media (min-width: 1000px) {
+	body.single-product .summary .bp-pdp-purchase-panel > p.price,
+	body.single-product .summary .bp-pdp-purchase-panel .woocommerce-variation-price .price {
+		font-size: var(--bp-text-h2-size, 1.75rem);
+	}
+}

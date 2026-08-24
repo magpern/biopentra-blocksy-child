@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BLOCKSY_CHILD_VERSION', '1.1.0' );
+define( 'BLOCKSY_CHILD_VERSION', '1.1.4' );
 define( 'BLOCKSY_CHILD_DIR', get_stylesheet_directory() );
 define( 'BLOCKSY_CHILD_URI', get_stylesheet_directory_uri() );
 
@@ -40,6 +40,14 @@ function blocksy_child_enqueue_pdp_assets() {
 		'blocksy-child-pdp-layout',
 		BLOCKSY_CHILD_URI . '/assets/pdp/layout.css',
 		array( 'blocksy-child-pdp-gallery' ),
+		BLOCKSY_CHILD_VERSION
+	);
+
+	// PDP-1 — purchase panel (WP3/WP4).
+	wp_enqueue_style(
+		'blocksy-child-pdp-purchase-panel',
+		BLOCKSY_CHILD_URI . '/assets/pdp/purchase-panel.css',
+		array( 'blocksy-child-pdp-layout' ),
 		BLOCKSY_CHILD_VERSION
 	);
 }
