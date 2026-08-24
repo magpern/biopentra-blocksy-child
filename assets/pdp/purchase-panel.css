@@ -6,6 +6,15 @@
  * Tokens-only, no hardcoded values, no CSS `order` (plan §7).
  */
 
+/* ── Divider tightening: Blocksy's default --product-element-spacing (10px)
+   applies as margin-bottom both before AND after the zero-height divider
+   layer, compounding into a visibly oversized gap between the description
+   and the variation selector / add-to-cart area. Kept (still a useful
+   separator) but tightened. ── */
+body.single-product .summary .ct-product-divider {
+	margin-bottom: var(--bp-space-2, 8px);
+}
+
 /* ── Eyebrow ── */
 body.single-product .summary .bp-pdp-eyebrow {
 	font-size: var(--bp-text-label-size, 0.875rem);
@@ -166,26 +175,6 @@ body.single-product .summary .bp-pdp-meta-label {
 	font-size: var(--bp-text-meta-size, 0.8125rem);
 }
 
-/* SKU has no wrapping label span (meta.php echoes "SKU:" via esc_html_e(),
-   which would double-escape an injected <span> — see the module's PHP
-   comment). Its leading label text is a bare text node, which still
-   inherits label styling from the flex row itself; the real nested .sku
-   value span is styled back to normal value treatment. Not pinned to the
-   same 110px column as the other rows, but visually consistent. */
-body.single-product .summary .product_meta > .sku_wrapper {
-	text-transform: uppercase;
-	letter-spacing: 0.03em;
-	font-weight: 600;
-	color: var(--bp-color-text-muted, #666);
-	font-size: var(--bp-text-meta-size, 0.8125rem);
-}
-
-body.single-product .summary .product_meta > .sku_wrapper .sku {
-	text-transform: none;
-	letter-spacing: normal;
-	font-weight: 400;
-	color: var(--bp-color-text, #1a1a1a);
-}
 
 /* ── Gallery hover-zoom: removed (PO decision, 2026-08-24) — Blocksy's
    zoom.js unconditionally initializes on the live front-end (its
