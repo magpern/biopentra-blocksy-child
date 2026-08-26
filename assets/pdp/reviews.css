@@ -1,0 +1,169 @@
+/**
+ * M3 — WooCommerce reviews tab + PDP rating summary polish.
+ *
+ * CSS-only. Native WooCommerce #reviews / commentlist markup and Blocksy
+ * tab mechanics are untouched. Sticky buy bar is out of scope — do not
+ * add sticky selectors here.
+ */
+
+/* ── PDP rating summary (storefront module, outside purchase panel) ── */
+
+body.single-product .summary .bp-pdp-rating-summary {
+	margin: 0 0 var(--bp-space-3, 12px);
+}
+
+body.single-product .summary .bp-pdp-rating-summary__line,
+body.single-product .summary .bp-pdp-rating-summary__empty {
+	margin: 0;
+	font-size: var(--bp-text-label-size, 0.875rem);
+	line-height: 1.45;
+	color: var(--bp-color-text-muted, #666);
+}
+
+body.single-product .summary .bp-pdp-rating-summary a {
+	color: var(--bp-color-primary, #0066cc);
+	text-decoration: underline;
+	text-underline-offset: 0.15em;
+}
+
+body.single-product .summary .bp-pdp-rating-summary a:focus-visible {
+	outline: 2px solid var(--bp-color-primary, #0066cc);
+	outline-offset: 2px;
+}
+
+/* ── Reviews tab panel / #reviews ── */
+
+.woocommerce-Tabs-panel--reviews,
+#tab-reviews,
+#reviews.woocommerce-Reviews {
+	font-size: var(--bp-text-body-size, 1rem);
+	line-height: var(--bp-text-body-line, 1.6);
+	color: var(--bp-color-text, #1a1a1a);
+}
+
+#reviews .woocommerce-Reviews-title {
+	margin: 0 0 var(--bp-space-4, 16px);
+	font-size: var(--bp-text-h3-size, 1.25rem);
+	font-weight: 600;
+	line-height: 1.3;
+	color: var(--bp-color-text, #1a1a1a);
+}
+
+#reviews .woocommerce-noreviews,
+#reviews .woocommerce-verification-required,
+#reviews .biopentra-upr-host-review-unavailable {
+	margin: 0 0 var(--bp-space-4, 16px);
+	padding: var(--bp-space-3, 12px) var(--bp-space-4, 16px);
+	font-size: var(--bp-text-label-size, 0.875rem);
+	line-height: 1.5;
+	color: var(--bp-color-text, #1a1a1a);
+	background: var(--bp-color-surface-muted, rgba(0, 0, 0, 0.04));
+	border-left: 3px solid var(--bp-color-border, rgba(0, 0, 0, 0.12));
+}
+
+#reviews .biopentra-upr-host-review-unavailable[role="status"] {
+	border-left-color: var(--bp-color-primary, #0066cc);
+}
+
+#reviews .commentlist {
+	list-style: none;
+	margin: 0 0 var(--bp-space-5, 24px);
+	padding: 0;
+}
+
+#reviews .commentlist > li {
+	margin: 0 0 var(--bp-space-4, 16px);
+	padding: 0 0 var(--bp-space-4, 16px);
+	border-bottom: 1px solid var(--bp-color-border, rgba(0, 0, 0, 0.08));
+}
+
+#reviews .commentlist > li:last-child {
+	margin-bottom: 0;
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+#reviews .commentlist .comment-text {
+	margin: 0;
+}
+
+#reviews .commentlist .meta,
+#reviews .commentlist .woocommerce-review__author,
+#reviews .commentlist .woocommerce-review__published-date {
+	font-size: var(--bp-text-meta-size, 0.8125rem);
+	color: var(--bp-color-text-muted, #666);
+}
+
+#reviews .commentlist .description p {
+	margin: var(--bp-space-2, 8px) 0 0;
+	font-size: var(--bp-text-body-size, 1rem);
+	line-height: var(--bp-text-body-line, 1.6);
+	color: var(--bp-color-text, #1a1a1a);
+}
+
+#reviews .star-rating {
+	float: none;
+	display: inline-block;
+	margin: 0 0 var(--bp-space-2, 8px);
+	font-size: var(--bp-text-label-size, 0.875rem);
+	line-height: 1;
+}
+
+#reviews #review_form_wrapper {
+	margin-top: var(--bp-space-5, 24px);
+}
+
+#reviews #review_form .comment-reply-title,
+#reviews #review_form .comment-form-rating label,
+#reviews #review_form label {
+	font-size: var(--bp-text-label-size, 0.875rem);
+	font-weight: 600;
+	color: var(--bp-color-text, #1a1a1a);
+}
+
+#reviews #review_form textarea,
+#reviews #review_form input[type="text"],
+#reviews #review_form input[type="email"] {
+	width: 100%;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+#reviews #review_form .form-submit input[type="submit"] {
+	min-height: var(--bp-touch-min, 44px);
+	padding: var(--bp-space-2, 8px) var(--bp-space-4, 16px);
+}
+
+/* ── Mobile readability ── */
+
+@media (max-width: 767px) {
+	body.single-product .summary .bp-pdp-rating-summary__line,
+	body.single-product .summary .bp-pdp-rating-summary__empty {
+		font-size: var(--bp-text-body-size, 1rem);
+		line-height: 1.5;
+	}
+
+	body.single-product .summary .bp-pdp-rating-summary a {
+		display: inline;
+		/* Keep tap target comfortable without forcing a full-width block */
+		padding: 0.15em 0;
+	}
+
+	#reviews .woocommerce-Reviews-title {
+		font-size: var(--bp-text-h4-size, 1.125rem);
+	}
+
+	#reviews .commentlist .description p,
+	#reviews .woocommerce-noreviews,
+	#reviews .woocommerce-verification-required,
+	#reviews .biopentra-upr-host-review-unavailable {
+		font-size: var(--bp-text-body-size, 1rem);
+		line-height: 1.55;
+	}
+
+	#reviews #comments,
+	#reviews #review_form_wrapper {
+		width: 100%;
+		float: none;
+	}
+}
