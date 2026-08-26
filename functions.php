@@ -59,5 +59,13 @@ function blocksy_child_enqueue_pdp_assets() {
 		array( 'blocksy-child-pdp-purchase-panel' ),
 		BLOCKSY_CHILD_VERSION
 	);
+
+	// M3 — Reviews tab / #reviews / rating-summary polish (CSS only).
+	wp_enqueue_style(
+		'blocksy-child-pdp-reviews',
+		BLOCKSY_CHILD_URI . '/assets/pdp/reviews.css',
+		array( 'blocksy-child-pdp-tabs' ),
+		BLOCKSY_CHILD_VERSION
+	);
 }
 add_action( 'wp_enqueue_scripts', 'blocksy_child_enqueue_pdp_assets', 30 );
