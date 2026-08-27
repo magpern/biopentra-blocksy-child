@@ -1,5 +1,15 @@
 # Changelog — Biopentra Blocksy Child
 
+## [1.2.13] - 2026-08-27
+
+### Added
+
+- **M3 B4 PDP reviews section styles:** spacing for `.bp-pdp-reviews-section`; `:focus-visible` ring on `#reviews` for programmatic focus (A11). Sticky buy bar untouched.
+
+### Fixed
+
+- **Rating-summary link contrast:** hardcode `#174a87` for `.bp-pdp-rating-summary a` (+ focus-visible) to meet WCAG AA against the PDP summary surface (preserves prior uncommitted corrective).
+
 ## [1.2.10] - 2026-08-24
 
 ### Fixed
