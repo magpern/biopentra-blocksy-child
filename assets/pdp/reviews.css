@@ -1,9 +1,8 @@
 /**
- * M3 — WooCommerce reviews tab + PDP rating summary polish.
+ * M3 — WooCommerce reviews + PDP rating summary + dedicated reviews section.
  *
- * CSS-only. Native WooCommerce #reviews / commentlist markup and Blocksy
- * tab mechanics are untouched. Sticky buy bar is out of scope — do not
- * add sticky selectors here.
+ * CSS-only. Native WooCommerce #reviews / commentlist markup is untouched.
+ * Sticky buy bar is out of scope — do not add sticky selectors here.
  */
 
 /* ── PDP rating summary (storefront module, outside purchase panel) ── */
@@ -21,17 +20,38 @@ body.single-product .summary .bp-pdp-rating-summary__empty {
 }
 
 body.single-product .summary .bp-pdp-rating-summary a {
-	color: var(--bp-color-primary, #0066cc);
+	color: #174a87 !important;
 	text-decoration: underline;
 	text-underline-offset: 0.15em;
 }
 
 body.single-product .summary .bp-pdp-rating-summary a:focus-visible {
-	outline: 2px solid var(--bp-color-primary, #0066cc);
+	outline: 2px solid #174a87;
 	outline-offset: 2px;
 }
 
-/* ── Reviews tab panel / #reviews ── */
+/* ── Dedicated PDP reviews section (storefront B4; tabs remain off) ── */
+
+body.single-product .bp-pdp-reviews-section {
+	margin: var(--bp-space-6, 32px) 0 var(--bp-space-5, 24px);
+	clear: both;
+}
+
+body.single-product .bp-pdp-reviews-section[data-bp-reviews-section] {
+	display: block;
+}
+
+/* Programmatic focus target for summary / deep-link #reviews (A11) */
+#reviews.woocommerce-Reviews:focus {
+	outline: none;
+}
+
+#reviews.woocommerce-Reviews:focus-visible {
+	outline: 2px solid #174a87;
+	outline-offset: 4px;
+}
+
+/* ── Reviews panel / #reviews ── */
 
 .woocommerce-Tabs-panel--reviews,
 #tab-reviews,
