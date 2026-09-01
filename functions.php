@@ -7,9 +7,23 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'BLOCKSY_CHILD_VERSION', '1.2.13' );
+define( 'BLOCKSY_CHILD_VERSION', '1.2.14' );
 define( 'BLOCKSY_CHILD_DIR', get_stylesheet_directory() );
 define( 'BLOCKSY_CHILD_URI', get_stylesheet_directory_uri() );
+
+/**
+ * Automatic updates via the private update server. Define PRIVATE_UPDATE_SERVER
+ * (scheme + host, no trailing slash) in wp-config.php to enable; when it is not
+ * defined the theme does not check for updates.
+ */
+if ( defined( 'PRIVATE_UPDATE_SERVER' ) && PRIVATE_UPDATE_SERVER ) {
+	require_once BLOCKSY_CHILD_DIR . '/lib/plugin-update-checker/plugin-update-checker.php';
+	\YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+		rtrim( (string) PRIVATE_UPDATE_SERVER, '/' ) . '/?action=get_metadata&slug=blocksy-child',
+		BLOCKSY_CHILD_DIR . '/style.css',
+		'blocksy-child'
+	);
+}
 
 require_once BLOCKSY_CHILD_DIR . '/inc/checkout-v2/class-checkout-v2.php';
 require_once BLOCKSY_CHILD_DIR . '/inc/pdp-sticky-bar/class-pdp-sticky-bar.php';
