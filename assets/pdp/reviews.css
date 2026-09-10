@@ -33,11 +33,29 @@ body.single-product .summary .bp-pdp-rating-summary a:focus-visible {
 /* ── Dedicated PDP reviews section (storefront B4; tabs remain off) ── */
 
 body.single-product .bp-pdp-reviews-section {
-	margin: var(--bp-space-6, 32px) 0 var(--bp-space-5, 24px);
+	/*
+	 * Align the section with the description tabs / "You may also like" row.
+	 * The module renders a bare <section> straight into .ct-container-full, so
+	 * without this it spans the full container instead of the content column.
+	 * Same recipe Blocksy's own .is-width-constrained blocks use.
+	 */
+	margin: var(--bp-space-6, 32px) auto var(--bp-space-5, 24px);
+	width: var(--theme-container-width);
+	max-width: var(--theme-block-max-width);
 	clear: both;
 }
 
 body.single-product .bp-pdp-reviews-section[data-bp-reviews-section] {
+	display: block;
+}
+
+/*
+ * Blocksy turns .woocommerce-Reviews into a 2-column grid on desktop
+ * ([data-content="normal"] .woocommerce-Reviews). Inside the dedicated
+ * section that pushes the host "reviews unavailable" notice into column 1
+ * and #comments into column 2. Stack them instead.
+ */
+body.single-product .bp-pdp-reviews-section .woocommerce-Reviews {
 	display: block;
 }
 
@@ -71,7 +89,8 @@ body.single-product .bp-pdp-reviews-section[data-bp-reviews-section] {
 
 #reviews .woocommerce-noreviews,
 #reviews .woocommerce-verification-required,
-#reviews .biopentra-upr-host-review-unavailable {
+#reviews .biopentra-upr-host-review-unavailable,
+#reviews .upr-host-adapter-review-unavailable {
 	margin: 0 0 var(--bp-space-4, 16px);
 	padding: var(--bp-space-3, 12px) var(--bp-space-4, 16px);
 	font-size: var(--bp-text-label-size, 0.875rem);
@@ -81,7 +100,8 @@ body.single-product .bp-pdp-reviews-section[data-bp-reviews-section] {
 	border-left: 3px solid var(--bp-color-border, rgba(0, 0, 0, 0.12));
 }
 
-#reviews .biopentra-upr-host-review-unavailable[role="status"] {
+#reviews .biopentra-upr-host-review-unavailable[role="status"],
+#reviews .upr-host-adapter-review-unavailable[role="status"] {
 	border-left-color: var(--bp-color-primary, #0066cc);
 }
 
@@ -176,7 +196,8 @@ body.single-product .bp-pdp-reviews-section[data-bp-reviews-section] {
 	#reviews .commentlist .description p,
 	#reviews .woocommerce-noreviews,
 	#reviews .woocommerce-verification-required,
-	#reviews .biopentra-upr-host-review-unavailable {
+	#reviews .biopentra-upr-host-review-unavailable,
+	#reviews .upr-host-adapter-review-unavailable {
 		font-size: var(--bp-text-body-size, 1rem);
 		line-height: 1.55;
 	}
