@@ -1,12 +1,19 @@
 # Changelog — Biopentra Blocksy Child
 
-## [1.2.14] - 2026-09-10
+## [1.2.15] - 2026-09-10
 
 ### Fixed
 
 - **PDP dedicated reviews section alignment:** the storefront module renders a bare `<section class="bp-pdp-reviews-section">` directly into `.ct-container-full`, so it spanned the full container instead of lining up with the description tabs / "You may also like" row. Constrain it to the content column (`--theme-container-width` / `--theme-block-max-width`, centered) to match Blocksy's `.is-width-constrained` blocks.
 - **Split reviews notice:** Blocksy's `[data-content="normal"] .woocommerce-Reviews` 2-column grid pushed the host "reviews unavailable" notice into the left column and the `#comments` box into the right. Force `display: block` on `.woocommerce-Reviews` inside the section so the notice and the Reviews box stack under the description.
 - **Unavailable-notice styling:** the host adapter renders `.upr-host-adapter-review-unavailable`, but the stylesheet only targeted the old `.biopentra-upr-host-review-unavailable` class, so the notice lost its bordered callout box. Add the current class to the affected rules.
+
+## [1.2.14] - 2026-09-01
+
+### Added
+
+- Self-updates from a private update server via the bundled Plugin Update Checker v5 library (`lib/plugin-update-checker/`), registered only when `PRIVATE_UPDATE_SERVER` is defined in `wp-config.php`.
+- CI workflow that uploads the release ZIP to the update server on each `v*` tag.
 
 ## [1.2.13] - 2026-08-27
 
