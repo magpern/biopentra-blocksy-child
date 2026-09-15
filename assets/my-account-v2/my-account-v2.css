@@ -72,8 +72,14 @@ body.bp-my-account-v2 .woocommerce-notices-wrapper:not(:empty) {
 }
 
 .bp-ma-v2__logo {
-	max-height: 32px;
+	/* .bp-ma-v2__panel is a flex column; align-items:stretch (its default)
+	   resolves this item's own auto width to 100% of the cross axis
+	   regardless of the width:auto below, distorting the logo's aspect
+	   ratio. align-self opts this one child out of stretch. */
+	align-self: flex-start;
+	height: 32px;
 	width: auto;
+	max-width: none;
 	margin-bottom: var(--bp-ma-space-lg);
 }
 
