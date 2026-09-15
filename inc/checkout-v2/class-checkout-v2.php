@@ -185,8 +185,7 @@ final class Blocksy_Child_Checkout_V2 {
 			array(
 				'stickyOffset' => is_admin_bar_showing() ? 46 : 16,
 				'i18n'         => array(
-					'orderSummary'    => __( 'Order summary', 'blocksy-child' ),
-					'noDeliveryNeeded' => __( 'This order does not need delivery — continue to payment.', 'blocksy-child' ),
+					'orderSummary' => __( 'Order summary', 'blocksy-child' ),
 				),
 			)
 		);

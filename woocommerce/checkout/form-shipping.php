@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$use_v2 = class_exists( 'Blocksy_Child_Checkout_V2' ) && Blocksy_Child_Checkout_V2::is_layout_active();
+$use_v2 = function_exists( 'Blocksy_Child_Checkout_V2' ) && Blocksy_Child_Checkout_V2::is_layout_active();
 
 if ( ! $use_v2 ) :
 	?>

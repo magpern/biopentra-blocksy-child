@@ -4,26 +4,6 @@
  *
  * Based on WooCommerce core 9.4.0. Only adds structural wrappers when body.bp-checkout-v2 is present.
  *
- * Details / Delivery / Payment are three numbered sections shown all at
- * once, in normal document order — not a hide/show wizard. The pills above
- * them are plain in-page anchor links (scroll position, tracked by
- * checkout-v2.js, marks the current one active) so there is no click-to-
- * advance gate to get stuck behind and no per-step validation to fight
- * WooCommerce's own hidden ship-to-different-address fields (an earlier,
- * now-reverted version of this template had exactly that bug).
- *
- * The aside still renders the exact same
- * do_action( 'woocommerce_checkout_order_review' ) as always — items table
- * (with its shipping-method row) + #payment, completely untouched
- * WooCommerce output. checkout-v2.js physically relocates the shipping row
- * into #bp-checkout-v2-delivery-slot and #payment into
- * #bp-checkout-v2-payment-slot on load and after every WooCommerce
- * `updated_checkout` AJAX refresh (which re-renders both back into the
- * aside each time) — never clones, never re-renders, never hides the
- * originals via CSS. If JS fails to run for any reason, both remain
- * exactly where WooCommerce always puts them, in the aside, fully visible
- * and usable.
- *
  * @see https://woocommerce.com/document/template-structure/
  * @package WooCommerce\Templates
  * @version 9.4.0
@@ -31,7 +11,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$use_v2_layout = class_exists( 'Blocksy_Child_Checkout_V2' ) && Blocksy_Child_Checkout_V2::is_layout_active();
+$use_v2_layout = function_exists( 'Blocksy_Child_Checkout_V2' ) && Blocksy_Child_Checkout_V2::is_layout_active();
 
 if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_required() && ! is_user_logged_in() ) {
 	echo esc_html( apply_filters( 'woocommerce_checkout_must_be_logged_in_message', __( 'You must be logged in to checkout.', 'woocommerce' ) ) );
@@ -48,21 +28,6 @@ do_action( 'woocommerce_before_checkout_form', $checkout );
 	<!-- bp-checkout-v2-layout -->
 	<div class="bp-checkout-v2__grid">
 		<div class="bp-checkout-v2__main">
-
-			<nav class="bp-checkout-v2__steps" aria-label="<?php echo esc_attr__( 'Checkout sections', 'blocksy-child' ); ?>">
-				<a href="#bp-co-section-details" class="bp-checkout-v2__step-tab is-active" data-step="details">
-					<span class="bp-checkout-v2__step-num">1</span><?php esc_html_e( 'Details', 'blocksy-child' ); ?>
-				</a>
-				<a href="#bp-co-section-delivery" class="bp-checkout-v2__step-tab" data-step="delivery">
-					<span class="bp-checkout-v2__step-num">2</span><?php esc_html_e( 'Delivery', 'blocksy-child' ); ?>
-				</a>
-				<a href="#bp-co-section-payment" class="bp-checkout-v2__step-tab" data-step="payment">
-					<span class="bp-checkout-v2__step-num">3</span><?php esc_html_e( 'Payment', 'blocksy-child' ); ?>
-				</a>
-			</nav>
-
-			<section class="bp-checkout-v2__section" id="bp-co-section-details" data-step="details">
-				<h2 class="bp-checkout-v2__section-heading"><span class="bp-checkout-v2__section-num">01</span><?php esc_html_e( 'Where it\'s going', 'blocksy-child' ); ?></h2>
 	<?php endif; ?>
 
 	<?php if ( $checkout->get_checkout_fields() ) : ?>
@@ -83,42 +48,7 @@ do_action( 'woocommerce_before_checkout_form', $checkout );
 
 	<?php endif; ?>
 
-	<?php if ( $use_v2_layout ) : ?>
-			</section><!-- section: details -->
-
-			<section class="bp-checkout-v2__section" id="bp-co-section-delivery" data-step="delivery">
-				<h2 class="bp-checkout-v2__section-heading"><span class="bp-checkout-v2__section-num">02</span><?php esc_html_e( 'How it travels', 'blocksy-child' ); ?></h2>
-				<table class="bp-checkout-v2__delivery-slot" id="bp-checkout-v2-delivery-slot" aria-live="polite"><tbody>
-					<tr class="bp-checkout-v2__delivery-placeholder">
-						<td><?php esc_html_e( 'Enter your delivery details above — options appear here once your address is known.', 'blocksy-child' ); ?></td>
-					</tr>
-				</tbody></table>
-			</section><!-- section: delivery -->
-
-			<section class="bp-checkout-v2__section" id="bp-co-section-payment" data-step="payment">
-				<h2 class="bp-checkout-v2__section-heading"><span class="bp-checkout-v2__section-num">03</span><?php esc_html_e( 'How you pay', 'blocksy-child' ); ?></h2>
-				<div id="bp-checkout-v2-payment-slot" aria-live="polite"></div>
-			</section><!-- section: payment -->
-
-		</div><!-- .bp-checkout-v2__main -->
-
-		<aside class="bp-checkout-v2__aside" aria-labelledby="order_review_heading">
-			<div class="bp-checkout-v2__summary-card">
-				<h3 id="order_review_heading" class="bp-checkout-v2__summary-title"><?php esc_html_e( 'Your order', 'blocksy-child' ); ?></h3>
-
-				<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
-
-				<div id="order_review" class="woocommerce-checkout-review-order bp-checkout-v2__order-review">
-					<?php do_action( 'woocommerce_checkout_order_review' ); ?>
-				</div>
-
-				<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
-			</div>
-		</aside>
-
-		</div><!-- .bp-checkout-v2__grid -->
-
-	<?php else : ?>
+	<?php if ( ! $use_v2_layout ) : ?>
 
 		<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
 
@@ -131,6 +61,28 @@ do_action( 'woocommerce_before_checkout_form', $checkout );
 		</div>
 
 		<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
+
+	<?php else : ?>
+
+		<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
+
+		</div><!-- .bp-checkout-v2__main -->
+
+		<aside class="bp-checkout-v2__aside" aria-labelledby="order_review_heading">
+			<div class="bp-checkout-v2__summary-card">
+				<h3 id="order_review_heading" class="bp-checkout-v2__summary-title"><?php esc_html_e( 'Order summary', 'blocksy-child' ); ?></h3>
+
+				<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
+
+				<div id="order_review" class="woocommerce-checkout-review-order bp-checkout-v2__order-review">
+					<?php do_action( 'woocommerce_checkout_order_review' ); ?>
+				</div>
+
+				<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
+			</div>
+		</aside>
+
+		</div><!-- .bp-checkout-v2__grid -->
 
 	<?php endif; ?>
 
