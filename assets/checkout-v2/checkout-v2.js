@@ -31,22 +31,45 @@
 	 * Moves the gift-card/store-credit accordion (rendered by
 	 * mp-commerce-promotions on woocommerce_before_checkout_form, so it
 	 * starts out above Billing details, before <form> even opens) to sit
-	 * right after the Place order button instead. A one-time move, not
-	 * re-run on `updated_checkout`: the accordion is a plain PHP-rendered,
-	 * full-page-POST element with no AJAX refresh of its own, and — unlike
-	 * the earlier (reverted) step-wizard work — it's inserted as a SIBLING
-	 * after #payment, never as #payment's child, specifically so
-	 * WooCommerce's own `.woocommerce-checkout-payment` fragment replace
-	 * (on every update_checkout) can't carry it away: replaceWith() only
-	 * swaps the matched element itself, never its siblings.
+	 * directly under the coupon-code row in the order review table.
+	 *
+	 * Unlike the earlier #payment-sibling placement, this DOES need to
+	 * re-run on `updated_checkout`: the coupon row lives inside
+	 * `.woocommerce-checkout-review-order-table`, which WooCommerce
+	 * replaces wholesale (replaceWith()) on every AJAX update — any
+	 * descendant we'd inserted goes with it. We keep a persistent
+	 * reference to the panel (captured once, since after the table's
+	 * first replacement the panel node is detached and no longer
+	 * reachable via a fresh `$('.mp-cp-gift-card-checkout')` document
+	 * query) and re-append that same node — preserving any in-progress
+	 * form input — into the freshly-rendered table each time.
 	 */
-	function relocateGiftCardPanel() {
-		var $panel = $('.mp-cp-gift-card-checkout').first();
-		var $payment = $('#payment').first();
+	var $giftCardPanel = null;
 
-		if ($panel.length && $payment.length) {
-			$payment.after($panel);
+	function relocateGiftCardPanel() {
+		if (!$giftCardPanel || !$giftCardPanel.length) {
+			$giftCardPanel = $('.mp-cp-gift-card-checkout').first();
 		}
+
+		if (!$giftCardPanel.length) {
+			return;
+		}
+
+		var $couponRow = $('.bp-checkout-v2__coupon-row').first();
+
+		if (!$couponRow.length) {
+			return;
+		}
+
+		var $existingRow = $giftCardPanel.closest('tr.bp-checkout-v2__giftcard-row');
+
+		if ($existingRow.length && $existingRow.prev()[0] === $couponRow[0]) {
+			return;
+		}
+
+		var $row = $('<tr class="bp-checkout-v2__giftcard-row"><td colspan="2"></td></tr>');
+		$row.find('td').append($giftCardPanel);
+		$couponRow.after($row);
 	}
 
 	function init() {
@@ -63,6 +86,7 @@
 		// Re-apply after WooCommerce checkout AJAX updates.
 		$body.on('updated_checkout payment_method_selected', function () {
 			markSelectedPayment();
+			relocateGiftCardPanel();
 		});
 
 		$(window).on('resize', setStickyOffset);
