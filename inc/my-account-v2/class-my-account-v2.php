@@ -24,6 +24,37 @@ final class Blocksy_Child_My_Account_V2 {
 	public static function init(): void {
 		add_filter( 'body_class', array( __CLASS__, 'body_class' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ), 120 );
+		add_action( 'template_redirect', array( __CLASS__, 'guard_account_email' ), 5 );
+	}
+
+	/**
+	 * The account-details form displays the email field as read-only (it's
+	 * order-history-matching data, same "contact support to change it"
+	 * policy as the addresses card), but a read-only HTML attribute is only
+	 * a UI hint — a hand-crafted POST could still change it. This runs
+	 * before WC_Form_Handler::save_account_details() (also on
+	 * template_redirect, default priority 10) and resets the posted email
+	 * back to the account's real one whenever it differs, so the save is a
+	 * silent no-op for that one field instead of a bypass.
+	 */
+	public static function guard_account_email(): void {
+		if ( ! self::is_layout_active() ) {
+			return;
+		}
+
+		if ( empty( $_POST['action'] ) || 'save_account_details' !== $_POST['action'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			return;
+		}
+
+		if ( ! is_user_logged_in() || empty( $_POST['account_email'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			return;
+		}
+
+		$current_email = wp_get_current_user()->user_email;
+
+		if ( sanitize_email( wp_unslash( $_POST['account_email'] ) ) !== $current_email ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$_POST['account_email'] = wp_slash( $current_email );
+		}
 	}
 
 	/**

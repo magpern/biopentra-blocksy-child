@@ -474,10 +474,25 @@ body.bp-my-account-v2 .bp-ma-v2__email {
 }
 
 body.bp-my-account-v2 .bp-ma-v2__hint {
+	display: block;
 	margin: 0;
 	font-size: 0.8438rem;
 	color: var(--bp-ma-text-muted);
 	line-height: 1.5;
+}
+
+/* Used as a <span> under the account-details readonly email field (a <p>
+   can't nest inside the form-row <p> wrapper there); needs its own
+   top margin since it's not a block-level sibling like the address card's
+   usage of this same class. */
+body.bp-my-account-v2 .woocommerce-form-row .bp-ma-v2__hint {
+	margin-top: var(--bp-ma-space-xs);
+}
+
+body.bp-my-account-v2 input[readonly] {
+	background: var(--bp-ma-surface);
+	color: var(--bp-ma-text-muted);
+	cursor: not-allowed;
 }
 
 body.bp-my-account-v2 .bp-ma-v2__hint a {
