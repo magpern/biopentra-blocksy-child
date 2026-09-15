@@ -685,3 +685,13 @@ body.bp-my-account-v2 .bp-ma-v2__modal-confirm {
 body.bp-my-account-v2 .bp-ma-v2__modal-confirm:hover {
 	background: var(--bp-ma-accent-hover);
 }
+
+/* Blocksy's own page-header ("My account" <h1>, inc/components/hero) is
+   redundant once the v2 hero banner below it carries its own heading.
+   Hidden via CSS rather than fighting Blocksy's title-source PHP: it only
+   runs get_the_title() through the WooCommerce title filter when
+   is_woocommerce() is true, which the My Account page never is, so there
+   is no clean single filter point to unhook this from instead. */
+body.bp-my-account-v2 .hero-section {
+	display: none;
+}
