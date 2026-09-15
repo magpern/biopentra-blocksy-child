@@ -214,12 +214,27 @@ final class Blocksy_Child_Checkout_V2 {
 	 * Inline coupon-code row inside the order review table, between the
 	 * Shipping row and the Total row (Blocksy's own coupon-form removal
 	 * elsewhere on the page doesn't affect this — it's a separate hook).
-	 * Reusing WooCommerce's own `checkout_coupon` form class + `#coupon_code`
-	 * id/name means checkout.js's existing delegated apply-coupon handler
-	 * picks it up with no extra JS. Rendered from `woocommerce_review_order_*`,
-	 * so it's part of the `.woocommerce-checkout-review-order-table` fragment
-	 * WooCommerce already regenerates server-side on every update_checkout —
-	 * no relocation script needed, unlike the gift-card panel.
+	 *
+	 * Deliberately NOT a <form>: this row sits inside
+	 * .woocommerce-checkout-review-order-table, which itself lives inside
+	 * WooCommerce's own outer <form class="checkout">. A <form> nested
+	 * inside another <form> is invalid HTML, and — even though the DOM
+	 * happily contains it once inserted via replaceWith() — its native
+	 * `submit` event does NOT reliably bubble up to a document.body
+	 * delegated handler (confirmed: jQuery('.checkout_coupon').trigger
+	 * ('submit') silently fails to reach a body-level delegated listener
+	 * in Chromium). WooCommerce's own coupon-apply binding
+	 * ($('form.checkout_coupon').on('submit', ...) in checkout.js) is
+	 * ALSO non-delegated and only ever attaches to the form present at
+	 * page-ready — which this row usually isn't, since WooCommerce
+	 * itself replaces the whole table via an automatic update_checkout
+	 * shortly after page load. Combined, "Apply" would silently fall
+	 * back to a genuine full-page form POST to the checkout URL, which
+	 * WooCommerce's non-JS fallback processes server-side and redirects
+	 * back from — looking like the coupon reappearing a couple of
+	 * seconds later. Plain markup + our own click/keydown handlers in
+	 * checkout-v2.js (delegated on body, unaffected by nesting) sidesteps
+	 * all of this.
 	 */
 	public static function render_coupon_row(): void {
 		if ( ! self::is_active() ) {
@@ -232,11 +247,11 @@ final class Blocksy_Child_Checkout_V2 {
 		?>
 		<tr class="bp-checkout-v2__coupon-row">
 			<td colspan="2">
-				<form class="checkout_coupon woocommerce-form-coupon bp-checkout-v2__coupon-form" method="post">
+				<div class="bp-checkout-v2__coupon-form">
 					<label for="coupon_code" class="screen-reader-text"><?php esc_html_e( 'Coupon:', 'woocommerce' ); ?></label>
 					<input type="text" name="coupon_code" class="input-text" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" id="coupon_code" value="" />
-					<button type="submit" class="button" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_html_e( 'Apply', 'woocommerce' ); ?></button>
-				</form>
+					<button type="button" class="button bp-checkout-v2__coupon-apply" name="apply_coupon"><?php esc_html_e( 'Apply', 'woocommerce' ); ?></button>
+				</div>
 			</td>
 		</tr>
 		<?php
