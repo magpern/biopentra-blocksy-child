@@ -28,6 +28,7 @@ final class Blocksy_Child_Checkout_V2 {
 		add_filter( 'biopentra_checkout_v2_enabled', array( __CLASS__, 'filter_enabled' ) );
 		add_action( 'woocommerce_before_checkout_form', array( __CLASS__, 'trust_strip' ), 5 );
 		add_filter( 'woocommerce_checkout_fields', array( __CLASS__, 'tune_field_classes' ), 20 );
+		add_action( 'woocommerce_review_order_before_order_total', array( __CLASS__, 'render_coupon_row' ) );
 	}
 
 	/**
@@ -206,6 +207,38 @@ final class Blocksy_Child_Checkout_V2 {
 				<li><?php esc_html_e( 'COA-backed quality', 'blocksy-child' ); ?></li>
 			</ul>
 		</div>
+		<?php
+	}
+
+	/**
+	 * Inline coupon-code row inside the order review table, between the
+	 * Shipping row and the Total row (Blocksy's own coupon-form removal
+	 * elsewhere on the page doesn't affect this — it's a separate hook).
+	 * Reusing WooCommerce's own `checkout_coupon` form class + `#coupon_code`
+	 * id/name means checkout.js's existing delegated apply-coupon handler
+	 * picks it up with no extra JS. Rendered from `woocommerce_review_order_*`,
+	 * so it's part of the `.woocommerce-checkout-review-order-table` fragment
+	 * WooCommerce already regenerates server-side on every update_checkout —
+	 * no relocation script needed, unlike the gift-card panel.
+	 */
+	public static function render_coupon_row(): void {
+		if ( ! self::is_active() ) {
+			return;
+		}
+
+		if ( ! function_exists( 'wc_coupons_enabled' ) || ! wc_coupons_enabled() ) {
+			return;
+		}
+		?>
+		<tr class="bp-checkout-v2__coupon-row">
+			<td colspan="2">
+				<form class="checkout_coupon woocommerce-form-coupon bp-checkout-v2__coupon-form" method="post">
+					<label for="coupon_code" class="screen-reader-text"><?php esc_html_e( 'Coupon:', 'woocommerce' ); ?></label>
+					<input type="text" name="coupon_code" class="input-text" placeholder="<?php esc_attr_e( 'Coupon code', 'woocommerce' ); ?>" id="coupon_code" value="" />
+					<button type="submit" class="button" name="apply_coupon" value="<?php esc_attr_e( 'Apply coupon', 'woocommerce' ); ?>"><?php esc_html_e( 'Apply', 'woocommerce' ); ?></button>
+				</form>
+			</td>
+		</tr>
 		<?php
 	}
 
