@@ -331,7 +331,7 @@ body.bp-checkout-v2 .woocommerce-checkout-review-order-table .order-total td {
 }
 
 body.bp-checkout-v2 .woocommerce-checkout-review-order-table .bp-checkout-v2__coupon-row td {
-	padding: 0.5rem 0;
+	padding: 0.5rem 0 0;
 	text-align: left;
 }
 
@@ -534,15 +534,15 @@ body.bp-checkout-v2 .woocommerce-checkout-review-order {
    regardless of our own enqueue priority — equal-specificity rules of ours
    would lose the cascade to theirs without it. */
 body.bp-checkout-v2 .woocommerce-checkout-review-order-table .bp-checkout-v2__giftcard-row td {
-	padding: 0 0 0.5rem !important;
-	text-align: center;
+	padding: 0.25rem 0 0.5rem !important;
+	text-align: left;
 }
 
 body.bp-checkout-v2 .mp-cp-credit-accordion {
 	margin: 0 !important;
 	border: none !important;
 	background: transparent !important;
-	text-align: center;
+	text-align: left;
 }
 
 body.bp-checkout-v2 .mp-cp-credit-accordion__toggle {
@@ -553,7 +553,7 @@ body.bp-checkout-v2 .mp-cp-credit-accordion__toggle {
 body.bp-checkout-v2 .mp-cp-credit-accordion__header {
 	display: inline-flex !important;
 	width: auto !important;
-	justify-content: center !important;
+	justify-content: flex-start !important;
 }
 
 body.bp-checkout-v2 .mp-cp-credit-accordion__icon,
