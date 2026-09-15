@@ -483,16 +483,71 @@ body.bp-checkout-v2 .woocommerce-checkout-review-order {
 	padding: 0;
 }
 
-/* MP promotions / gift cards — keep readable inside summary */
-body.bp-checkout-v2 .bp-checkout-v2__order-review .mp-cp-checkout-panel,
-body.bp-checkout-v2 .bp-checkout-v2__order-review [class*="gift-card"],
-body.bp-checkout-v2 .bp-checkout-v2__order-review [class*="store-credit"] {
+/* Gift card / store credit — relocated by checkout-v2.js to sit right
+   after the Place order button (was a full-width bordered box above
+   Billing details; now a small centered link that only grows into a
+   form once opened, so it doesn't compete for space with the actual
+   checkout fields — worst on mobile, which is what prompted this). */
+/* Scoped to body.bp-checkout-v2 only, NOT .bp-checkout-v2__order-review —
+   that wrapper class is only added by the (currently reverted) v2 grid
+   template; on the live template today #order_review never gets it, so a
+   selector requiring it would silently never match, same as every other
+   rule in this file that targets #payment/#order_review content directly.
+
+   !important throughout: mp-commerce-promotions enqueues its own
+   stylesheet late (during woocommerce_before_checkout_form rendering, not
+   wp_enqueue_scripts), so it always prints after checkout-v2.css in <head>
+   regardless of our own enqueue priority — equal-specificity rules of ours
+   would lose the cascade to theirs without it. */
+body.bp-checkout-v2 .mp-cp-credit-accordion {
+	margin: var(--bp-co-space-sm) 0 0 !important;
+	border: none !important;
+	background: transparent !important;
+	text-align: center;
+}
+
+body.bp-checkout-v2 .mp-cp-credit-accordion__toggle {
+	display: inline-block !important;
+	padding: 0 !important;
+}
+
+body.bp-checkout-v2 .mp-cp-credit-accordion__header {
+	display: inline-flex !important;
+	width: auto !important;
+	justify-content: center !important;
+}
+
+body.bp-checkout-v2 .mp-cp-credit-accordion__icon,
+body.bp-checkout-v2 .mp-cp-credit-accordion__chevron,
+body.bp-checkout-v2 .mp-cp-credit-accordion__summary-text {
+	display: none !important;
+}
+
+body.bp-checkout-v2 .mp-cp-credit-accordion__title {
+	font-size: 0.8125rem !important;
+	font-weight: 500 !important;
+	color: var(--bp-co-text-muted) !important;
+	white-space: normal !important;
+}
+
+body.bp-checkout-v2 .mp-cp-credit-accordion__toggle:hover .mp-cp-credit-accordion__title,
+body.bp-checkout-v2 .mp-cp-credit-accordion__toggle:focus .mp-cp-credit-accordion__title {
+	color: var(--bp-co-text) !important;
+	text-decoration: underline;
+}
+
+body.bp-checkout-v2 .mp-cp-credit-accordion[open] .mp-cp-credit-accordion__toggle {
+	margin-bottom: var(--bp-co-space-sm) !important;
+}
+
+body.bp-checkout-v2 .mp-cp-credit-accordion__body {
 	font-size: 0.8125rem;
-	margin: var(--bp-co-space-sm) 0;
-	padding: var(--bp-co-space-sm);
-	border: 1px solid var(--bp-co-border);
+	margin: 0 !important;
+	padding: var(--bp-co-space-sm) !important;
+	border: 1px solid var(--bp-co-border) !important;
 	border-radius: var(--bp-co-radius-sm);
 	background: var(--bp-co-surface);
+	text-align: left;
 }
 
 /* Loading overlay during checkout AJAX */
