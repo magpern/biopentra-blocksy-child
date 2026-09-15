@@ -540,6 +540,7 @@ body.bp-checkout-v2 .woocommerce-checkout-review-order-table .bp-checkout-v2__gi
 
 body.bp-checkout-v2 .mp-cp-credit-accordion {
 	margin: 0 !important;
+	padding: 0 !important;
 	border: none !important;
 	background: transparent !important;
 	text-align: left;
