@@ -193,19 +193,25 @@ final class Blocksy_Child_Checkout_V2 {
 	}
 
 	/**
-	 * Compact trust strip above checkout form.
+	 * Banner above the checkout form, replacing both the plain "Checkout"
+	 * page title (hidden accessibly, not removed, via .bp-checkout-v2__title-sr
+	 * in CSS — kept in the DOM for SEO/screen readers) and the old plain-text
+	 * trust strip it used to show here, which duplicated the same three
+	 * points the banner already covers visually.
 	 */
 	public static function trust_strip(): void {
 		if ( ! self::is_active() ) {
 			return;
 		}
 		?>
-		<div class="bp-checkout-v2__trust" aria-hidden="false">
-			<ul class="bp-checkout-v2__trust-list">
-				<li><?php esc_html_e( 'Secure encrypted checkout', 'blocksy-child' ); ?></li>
-				<li><?php esc_html_e( 'EU research-grade fulfillment', 'blocksy-child' ); ?></li>
-				<li><?php esc_html_e( 'COA-backed quality', 'blocksy-child' ); ?></li>
-			</ul>
+		<div class="bp-checkout-v2__banner">
+			<img
+				src="<?php echo esc_url( BLOCKSY_CHILD_URI . '/assets/checkout-v2/images/checkout-banner.webp' ); ?>"
+				alt="<?php esc_attr_e( 'Secure checkout — encrypted payment, quality fulfillment, and fast order processing.', 'blocksy-child' ); ?>"
+				width="2172"
+				height="724"
+				loading="eager"
+			/>
 		</div>
 		<?php
 	}

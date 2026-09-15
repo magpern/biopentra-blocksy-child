@@ -44,37 +44,36 @@ body.bp-checkout-v2 .ct-container {
 	padding-bottom: var(--bp-co-space-lg);
 }
 
-body.bp-checkout-v2 .bp-checkout-v2__trust {
-	margin-bottom: var(--bp-co-space-md);
-	padding: var(--bp-co-space-sm) var(--bp-co-space-md);
-	background: var(--bp-co-surface);
-	border: 1px solid var(--bp-co-border);
-	border-radius: var(--bp-co-radius-sm);
-}
-
-body.bp-checkout-v2 .bp-checkout-v2__trust-list {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--bp-co-space-sm) var(--bp-co-space-lg);
-	margin: 0;
+/* The plain "Checkout" page title stays in the DOM for SEO/screen readers
+   but is visually replaced by the banner below — off-screen, not
+   display:none, so assistive tech still announces it. */
+body.bp-checkout-v2 .hero-section .page-title {
+	position: absolute;
+	width: 1px;
+	height: 1px;
 	padding: 0;
-	list-style: none;
-	font-size: 0.75rem;
-	font-weight: 500;
-	letter-spacing: 0.02em;
-	text-transform: uppercase;
-	color: var(--bp-co-text-muted);
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
 }
 
-body.bp-checkout-v2 .bp-checkout-v2__trust-list li::before {
-	content: "";
+body.bp-checkout-v2 .hero-section {
+	padding-bottom: 0;
+}
+
+body.bp-checkout-v2 .bp-checkout-v2__banner {
+	margin: 0 0 var(--bp-co-space-md);
+	text-align: center;
+}
+
+body.bp-checkout-v2 .bp-checkout-v2__banner img {
 	display: inline-block;
-	width: 4px;
-	height: 4px;
-	margin-right: 0.5rem;
-	border-radius: 50%;
-	background: var(--bp-co-text-soft);
-	vertical-align: middle;
+	width: 100%;
+	max-width: 1120px;
+	height: auto;
+	border-radius: var(--bp-co-radius);
 }
 
 /* -------------------------------------------------------------------------
@@ -249,6 +248,18 @@ body.bp-checkout-v2 .woocommerce-checkout .form-row-last {
 	body.bp-checkout-v2 .woocommerce-checkout .form-row-last {
 		width: 100%;
 		float: none;
+	}
+
+	/* The banner's headline/subtext is legible at any width, but its
+	   payment-card illustration + logo strip on the right are decorative
+	   and shrink to unreadable clutter well before the text does — crop
+	   to the left portion instead of scaling the whole (fixed ~3:1) image
+	   down to mobile width. */
+	body.bp-checkout-v2 .bp-checkout-v2__banner img {
+		width: 100%;
+		height: 190px;
+		object-fit: cover;
+		object-position: left center;
 	}
 }
 
