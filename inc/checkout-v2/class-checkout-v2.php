@@ -26,7 +26,17 @@ final class Blocksy_Child_Checkout_V2 {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ), 120 );
 		add_filter( 'woocommerce_ship_to_different_address_checked', array( __CLASS__, 'ship_to_billing_only' ), 1000 );
 		add_filter( 'biopentra_checkout_v2_enabled', array( __CLASS__, 'filter_enabled' ) );
-		add_action( 'woocommerce_before_checkout_form', array( __CLASS__, 'trust_strip' ), 5 );
+		/**
+		 * Not woocommerce_before_checkout_form: the "New to crypto payments?"
+		 * banner (biopentra-storefront's Crypto_Payment_Guide_Module) is
+		 * prepended via a the_content filter at priority 8, which runs
+		 * BEFORE the [woocommerce_checkout] shortcode itself executes — so
+		 * no hook inside the checkout form, at any priority, can render
+		 * above it. Hooking the_content ourselves at a later priority lets
+		 * us prepend our banner in front of whatever the_content already
+		 * built (including that plugin's banner), landing it above.
+		 */
+		add_filter( 'the_content', array( __CLASS__, 'prepend_banner_to_content' ), 9 );
 		add_filter( 'woocommerce_checkout_fields', array( __CLASS__, 'tune_field_classes' ), 20 );
 		add_action( 'woocommerce_review_order_before_order_total', array( __CLASS__, 'render_coupon_row' ) );
 	}
@@ -198,22 +208,35 @@ final class Blocksy_Child_Checkout_V2 {
 	 * in CSS — kept in the DOM for SEO/screen readers) and the old plain-text
 	 * trust strip it used to show here, which duplicated the same three
 	 * points the banner already covers visually.
+	 *
+	 * @param string $content Existing page content (may already have other
+	 *                        plugins' banners/notices prepended by earlier
+	 *                        the_content priorities).
+	 * @return string
 	 */
-	public static function trust_strip(): void {
-		if ( ! self::is_active() ) {
-			return;
+	public static function prepend_banner_to_content( string $content ): string {
+		if ( ! self::is_active() || is_admin() || ! in_the_loop() || ! is_main_query() ) {
+			return $content;
 		}
+
+		$banner_path = BLOCKSY_CHILD_DIR . '/assets/checkout-v2/images/checkout-banner.webp';
+		$banner_ver  = file_exists( $banner_path ) ? (string) filemtime( $banner_path ) : self::VERSION;
+
+		ob_start();
 		?>
 		<div class="bp-checkout-v2__banner">
 			<img
-				src="<?php echo esc_url( BLOCKSY_CHILD_URI . '/assets/checkout-v2/images/checkout-banner.webp' ); ?>"
+				src="<?php echo esc_url( BLOCKSY_CHILD_URI . '/assets/checkout-v2/images/checkout-banner.webp?ver=' . $banner_ver ); ?>"
 				alt="<?php esc_attr_e( 'Secure checkout — encrypted payment, quality fulfillment, and fast order processing.', 'blocksy-child' ); ?>"
-				width="2172"
-				height="724"
+				width="2120"
+				height="442"
 				loading="eager"
 			/>
 		</div>
 		<?php
+		$banner_html = ob_get_clean();
+
+		return $banner_html . $content;
 	}
 
 	/**
