@@ -1,5 +1,23 @@
 # Changelog — Biopentra Blocksy Child
 
+## [1.4.0] - 2026-09-16
+
+### Added
+
+- **Checkout v2**: inline coupon-code field in the order-review table (Blocksy's theme setting had removed the default coupon form site-wide, so there was previously no way to enter one at checkout).
+- **Checkout v2**: gift card / store credit panel relocated from a full-width box above Billing Details to a small link under the coupon field.
+- **Checkout v2**: centered "Secure Checkout" banner replaces the plain page title and old plain-text trust strip; real `<h1>` kept off-screen for accessibility; cropped (not scaled) on mobile to stay legible.
+
+### Fixed
+
+- Checkout v2 coupon removal silently reapplying itself a few seconds later — the coupon-row `<form>` was invalidly nested inside WooCommerce's own outer checkout form, breaking native `submit` event bubbling and causing "Apply" to fall back to a full-page form POST. Fixed by driving it off delegated click/keydown handlers on plain markup instead of a nested `<form>`.
+- Checkout banner now renders via a `the_content` filter so it reliably outranks other plugins' own `the_content`-injected banners, which no in-form hook priority could ever beat.
+- Collapsed an empty ~280px gap Blocksy's page-title section left above the banner.
+
+### Notes
+
+- An in-progress 3-step checkout wizard was built and then fully reverted mid-session per product decision; net change to the checkout layout is zero beyond the items above.
+
 ## [1.3.0] - 2026-09-15
 
 ### Added
