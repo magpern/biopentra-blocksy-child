@@ -273,9 +273,400 @@ body.bp-my-account-v2 .woocommerce-notices-wrapper:not(:empty) {
 }
 
 /* Clear the floating currency-switcher pill (fixed to the viewport's left
-   edge), which otherwise sits on top of the panel heading at this width. */
+   edge), which otherwise sits on top of the panel/hero heading at this
+   width. */
 @media (max-width: 782px) {
-	.bp-ma-v2__panel {
+	.bp-ma-v2__panel,
+	.bp-ma-v2__hero-text {
 		padding-left: calc(var(--bp-ma-space-lg) + 3.25rem);
 	}
+}
+
+/* =========================================================================
+   Logged-in dashboard / addresses. Scoped to .ct-woo-account, the class
+   Blocksy's own theme already adds only when logged in (.ct-woo-unauthorized
+   on the login/register screen) — so this never touches the .bp-ma-v2
+   split-hero layout above, which shares the same .woocommerce wrapper.
+   ========================================================================= */
+
+body.bp-my-account-v2 .woocommerce.ct-woo-account {
+	max-width: 1100px;
+	margin: 0 auto;
+	font-family: var(--bp-ma-font);
+	display: grid;
+	grid-template-columns: 220px 1fr;
+	gap: var(--bp-ma-space-lg);
+	align-items: start;
+}
+
+@media (max-width: 782px) {
+	body.bp-my-account-v2 .woocommerce.ct-woo-account {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   Hero
+   ------------------------------------------------------------------------- */
+body.bp-my-account-v2 .bp-ma-v2__hero {
+	grid-column: 1 / -1;
+	background: var(--bp-ma-accent);
+	color: #ffffff;
+	border-radius: var(--bp-ma-radius);
+	padding: var(--bp-ma-space-lg);
+	margin-bottom: var(--bp-ma-space-sm);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__eyebrow--on-dark {
+	color: rgba(255, 255, 255, 0.65);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__hero h1 {
+	margin: 0 0 var(--bp-ma-space-xs);
+	font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	color: #ffffff;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__hero p:last-child {
+	margin: 0;
+	color: rgba(255, 255, 255, 0.75);
+	font-size: 0.9375rem;
+}
+
+/* -------------------------------------------------------------------------
+   Sidebar navigation
+   ------------------------------------------------------------------------- */
+body.bp-my-account-v2 .woocommerce-MyAccount-navigation ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+body.bp-my-account-v2 .woocommerce-MyAccount-navigation li a {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	height: auto;
+	padding: 0.7rem 0.9rem;
+	border: 0;
+	border-radius: var(--bp-ma-radius-sm);
+	color: var(--bp-ma-text-muted);
+	text-decoration: none;
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+/* Blocksy's own icon-font glyph per nav item (woocommerce.min.css
+   `a:before { font-family: "woo"; content: "..." }`) — suppressed in
+   favor of the real inline SVG icons above, so items show one icon, not
+   two. */
+body.bp-my-account-v2 .woocommerce-MyAccount-navigation li a::before {
+	content: none;
+}
+
+body.bp-my-account-v2 .woocommerce-MyAccount-navigation li a:hover {
+	background: var(--bp-ma-surface);
+}
+
+body.bp-my-account-v2 .woocommerce-MyAccount-navigation li.is-active a,
+body.bp-my-account-v2 .woocommerce-MyAccount-navigation li a[aria-current="page"] {
+	background: var(--bp-ma-accent);
+	color: #ffffff;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__nav-icon {
+	flex: 0 0 auto;
+}
+
+/* -------------------------------------------------------------------------
+   Content cards
+   ------------------------------------------------------------------------- */
+body.bp-my-account-v2 .woocommerce-MyAccount-content {
+	display: flex;
+	flex-direction: column;
+	gap: var(--bp-ma-space-md);
+	min-width: 0;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__panel-card {
+	background: var(--bp-ma-bg);
+	border: 1px solid var(--bp-ma-border);
+	border-radius: var(--bp-ma-radius);
+	box-shadow: var(--bp-ma-shadow);
+	padding: var(--bp-ma-space-lg);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__panel-card-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--bp-ma-space-sm);
+	margin-bottom: var(--bp-ma-space-md);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__panel-card-header h2,
+body.bp-my-account-v2 .bp-ma-v2__panel-card h2 {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0;
+	font-size: 1.0625rem;
+	font-weight: 700;
+	color: var(--bp-ma-text);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__edit-link {
+	flex: 0 0 auto;
+	border: 1px solid var(--bp-ma-border);
+	border-radius: var(--bp-ma-radius-sm);
+	padding: 0.4rem 0.9rem;
+	font-weight: 600;
+	font-size: 0.8125rem;
+	color: var(--bp-ma-text);
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__edit-link:hover {
+	background: var(--bp-ma-surface);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__rows {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__rows tr {
+	border-bottom: 1px solid var(--bp-ma-border);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__rows tr:last-child {
+	border-bottom: 0;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__rows th {
+	text-align: left;
+	vertical-align: top;
+	padding: 0.7rem 0.75rem 0.7rem 0;
+	width: 40%;
+	font-size: 0.6875rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--bp-ma-text-soft);
+	font-weight: 600;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__rows td {
+	padding: 0.7rem 0;
+	font-weight: 600;
+	color: var(--bp-ma-text);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__email {
+	margin: 0 0 var(--bp-ma-space-xs);
+	font-size: 1.0625rem;
+	font-weight: 700;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__hint {
+	margin: 0;
+	font-size: 0.8438rem;
+	color: var(--bp-ma-text-muted);
+	line-height: 1.5;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__hint a {
+	color: var(--bp-ma-text);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__empty {
+	margin: 0;
+	color: var(--bp-ma-text-muted);
+}
+
+/* -------------------------------------------------------------------------
+   Notice banner ("please check these are right")
+   ------------------------------------------------------------------------- */
+body.bp-my-account-v2 .bp-ma-v2__notice {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.75rem;
+	background: #fdf6e3;
+	border: 1px solid #f2e4b0;
+	color: #7a5b12;
+	border-radius: var(--bp-ma-radius-sm);
+	padding: 1rem 1.25rem;
+	margin-bottom: var(--bp-ma-space-sm);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__notice svg {
+	flex: 0 0 auto;
+	margin-top: 2px;
+	color: #c88a12;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__notice p {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.45;
+}
+
+/* -------------------------------------------------------------------------
+   Edit-address form, inside a .bp-ma-v2__panel-card
+   ------------------------------------------------------------------------- */
+body.bp-my-account-v2 .bp-ma-v2__panel-card .form-row {
+	margin-bottom: var(--bp-ma-space-md);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__panel-card label {
+	display: block;
+	margin-bottom: var(--bp-ma-space-xs);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--bp-ma-text);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__panel-card .input-text,
+body.bp-my-account-v2 .bp-ma-v2__panel-card select {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.65rem 0.85rem;
+	border: 1px solid var(--bp-ma-border);
+	border-radius: var(--bp-ma-radius-sm);
+	font-family: var(--bp-ma-font);
+	font-size: 0.9375rem;
+	color: var(--bp-ma-text);
+	background: var(--bp-ma-bg);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__panel-card .input-text:focus,
+body.bp-my-account-v2 .bp-ma-v2__panel-card select:focus {
+	outline: none;
+	border-color: var(--bp-ma-accent);
+	box-shadow: 0 0 0 3px var(--bp-ma-focus);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__panel-card button[type="submit"] {
+	border: 0;
+	border-radius: var(--bp-ma-radius-sm);
+	padding: 0.7rem 1.5rem;
+	background: var(--bp-ma-accent);
+	color: #ffffff;
+	font-family: var(--bp-ma-font);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__panel-card button[type="submit"]:hover {
+	background: var(--bp-ma-accent-hover);
+}
+
+/* -------------------------------------------------------------------------
+   Address-change confirm modal
+   ------------------------------------------------------------------------- */
+body.bp-my-account-v2 .bp-ma-v2__modal {
+	position: fixed;
+	inset: 0;
+	background: rgba(28, 35, 41, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--bp-ma-space-md);
+	z-index: 9999;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal[hidden] {
+	display: none;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-card {
+	background: var(--bp-ma-bg);
+	border-radius: var(--bp-ma-radius);
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+	padding: var(--bp-ma-space-lg);
+	max-width: 420px;
+	width: 100%;
+	max-height: calc(100vh - 2 * var(--bp-ma-space-md));
+	overflow-y: auto;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-header {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	margin-bottom: var(--bp-ma-space-sm);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	flex: 0 0 auto;
+	border-radius: 50%;
+	background: #fdf6e3;
+	color: #c88a12;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-header h2 {
+	margin: 0;
+	font-size: 1.125rem;
+	font-weight: 700;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-card > p {
+	margin: 0 0 var(--bp-ma-space-sm);
+	color: var(--bp-ma-text-muted);
+	font-size: 0.9rem;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-footnote {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+	margin: var(--bp-ma-space-sm) 0 var(--bp-ma-space-md);
+	font-size: 0.8rem;
+	line-height: 1.4;
+	color: var(--bp-ma-text-soft);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-footnote svg {
+	flex: 0 0 auto;
+	margin-top: 2px;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-actions {
+	display: flex;
+	gap: 0.75rem;
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-back,
+body.bp-my-account-v2 .bp-ma-v2__modal-confirm {
+	flex: 1;
+	border-radius: var(--bp-ma-radius-sm);
+	padding: 0.7rem 1rem;
+	font-family: var(--bp-ma-font);
+	font-size: 0.875rem;
+	font-weight: 600;
+	cursor: pointer;
+	border: 1px solid var(--bp-ma-border);
+	background: var(--bp-ma-bg);
+	color: var(--bp-ma-text);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-confirm {
+	background: var(--bp-ma-accent);
+	color: #ffffff;
+	border-color: var(--bp-ma-accent);
+}
+
+body.bp-my-account-v2 .bp-ma-v2__modal-confirm:hover {
+	background: var(--bp-ma-accent-hover);
 }
