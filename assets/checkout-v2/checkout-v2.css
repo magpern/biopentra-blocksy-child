@@ -534,7 +534,7 @@ body.bp-checkout-v2 .woocommerce-checkout-review-order {
    regardless of our own enqueue priority — equal-specificity rules of ours
    would lose the cascade to theirs without it. */
 body.bp-checkout-v2 .woocommerce-checkout-review-order-table .bp-checkout-v2__giftcard-row td {
-	padding: 0.25rem 0 0.5rem !important;
+	padding: 0 0 0.5rem !important;
 	text-align: left;
 }
 
