@@ -12,7 +12,16 @@
 	var $body = $(document.body);
 
 	function setStickyOffset() {
-		var top = bpCheckoutV2.stickyOffset || 16;
+		// wp_localize_script stringifies every value, so bpCheckoutV2.stickyOffset
+		// arrives as e.g. "46", not 46 — without parseInt, `top += 32` below does
+		// string concatenation ("46" + 32 -> "4632") instead of addition, only
+		// when the admin bar is present (i.e. only for logged-in users), which is
+		// exactly why this only broke logged-in checkout: the resulting
+		// `--bp-co-sticky-top: 4632px` made the sticky order-summary card's
+		// `max-height: calc(100vh - var(--bp-co-sticky-top) - 1.5rem)` resolve
+		// to 0 (clamped), collapsing it to just its heading, cart contents and
+		// all.
+		var top = parseInt(bpCheckoutV2.stickyOffset, 10) || 16;
 		if ($body.hasClass('admin-bar')) {
 			top += 32;
 		}
