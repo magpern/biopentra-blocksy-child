@@ -1,5 +1,20 @@
 # Changelog — Biopentra Blocksy Child
 
+## [1.3.0] - 2026-09-15
+
+### Added
+
+- **My Account v2**: split-hero login/register layout (brand panel + Sign in/Create account tabs), a redesigned logged-in dashboard/addresses area (icon sidebar nav, dark hero banner, a single "Delivery details" card instead of separate billing/shipping blocks, plus a read-only "Email address" card), and a review-before-save modal for address changes. Gated by option `biopentra_my_account_v2_enabled` (default off) or `?my_account_v2=1` for preview, same pattern as Checkout v2. Every new template override renders byte-identical to WooCommerce core when v2 is inactive.
+- Account-details email field is now read-only when v2 is active, matching the addresses card's "contact support to change it" policy — enforced both in the UI and server-side (`Blocksy_Child_My_Account_V2::guard_account_email()`, so a hand-crafted POST bypassing the `readonly` attribute is still a no-op).
+- **Email branding** (`Blocksy_Child_Email_Branding`): extends WooCommerce's own `woocommerce_email_styles`-generated CSS with real button styling for the `.link` call-to-action every `email_improvements`-era customer email uses (reset password, order details, fulfillment) — one change, applies to all of them. `emails/customer-reset-password.php` override adds a highlighted "what's in your account" box and corrected copy.
+
+### Fixed
+
+- A `wc_get_template()` self-recursion in the addresses-page template (calling `wc_get_template( 'myaccount/my-address.php' )` from inside that same override) caused a memory-exhaustion fatal — the non-v2 fallback now inlines WooCommerce core's markup instead of delegating.
+- Blocksy's own icon-font glyph on each account-nav item was rendering alongside the new inline-SVG icons, showing two icons per row — suppressed via CSS for v2.
+- The login-page logo was stretched ~2.4x wider than its true aspect ratio: `.bp-ma-v2__panel`'s flex `align-items: stretch` (the default) resolves an item's own `width: auto` to 100% of the cross axis regardless of that declaration — fixed with `align-self: flex-start`.
+- The floating currency-switcher pill (fixed to the viewport's left edge) overlapped the panel/hero heading at mobile widths — cleared with scoped padding.
+
 ## [1.2.15] - 2026-09-10
 
 ### Fixed
