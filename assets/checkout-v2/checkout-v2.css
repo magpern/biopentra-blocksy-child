@@ -527,12 +527,11 @@ body.bp-checkout-v2.elementor-page .bp-checkout-v2__grid {
 }
 
 /* =========================================================================
-   Step wizard (Details / Delivery / Payment)
+   Details / Delivery / Payment — always-visible numbered sections, not a
+   hide/show wizard. The pills below are plain scroll-to anchors; their
+   is-active state is scroll-position-driven (checkout-v2.js), purely a
+   progress indicator, never a gate.
    ========================================================================= */
-body.bp-checkout-v2 [hidden] {
-	display: none !important;
-}
-
 body.bp-checkout-v2 .bp-checkout-v2__steps {
 	display: flex;
 	gap: var(--bp-co-space-xs);
@@ -549,9 +548,6 @@ body.bp-checkout-v2 .bp-checkout-v2__step-tab {
 	align-items: center;
 	justify-content: center;
 	gap: 0.5rem;
-	appearance: none;
-	border: 0;
-	background: transparent;
 	border-radius: calc(var(--bp-co-radius) - 3px);
 	padding: 0.625rem 0.5rem;
 	font-family: var(--bp-co-font);
@@ -559,14 +555,9 @@ body.bp-checkout-v2 .bp-checkout-v2__step-tab {
 	font-weight: 600;
 	letter-spacing: 0.02em;
 	text-transform: uppercase;
+	text-decoration: none;
 	color: var(--bp-co-text-soft);
-	cursor: default;
 	transition: background-color 0.15s ease, color 0.15s ease;
-}
-
-body.bp-checkout-v2 .bp-checkout-v2__step-tab.is-done {
-	cursor: pointer;
-	color: var(--bp-co-text-muted);
 }
 
 body.bp-checkout-v2 .bp-checkout-v2__step-tab.is-active {
@@ -592,67 +583,35 @@ body.bp-checkout-v2 .bp-checkout-v2__step-tab.is-active .bp-checkout-v2__step-nu
 	background: var(--bp-co-accent);
 }
 
-body.bp-checkout-v2 .bp-checkout-v2__step-tab.is-done .bp-checkout-v2__step-num {
-	background: var(--bp-co-check, #2f6f5e);
+body.bp-checkout-v2 .bp-checkout-v2__section {
+	scroll-margin-top: calc(var(--bp-co-sticky-top, 1rem) + 3.5rem);
+	margin-bottom: var(--bp-co-space-lg);
+	padding-bottom: var(--bp-co-space-lg);
+	border-bottom: 1px solid var(--bp-co-border);
 }
 
-body.bp-checkout-v2 .bp-checkout-v2__step-panel {
-	animation: bp-co-step-in 0.15s ease;
+body.bp-checkout-v2 .bp-checkout-v2__section:last-child {
+	margin-bottom: 0;
+	padding-bottom: 0;
+	border-bottom: none;
 }
 
-@keyframes bp-co-step-in {
-	from {
-		opacity: 0;
-		transform: translateY(4px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-
-body.bp-checkout-v2 .bp-checkout-v2__step-actions {
+body.bp-checkout-v2 .bp-checkout-v2__section-heading {
 	display: flex;
-	gap: var(--bp-co-space-sm);
-	margin-top: var(--bp-co-space-lg);
-}
-
-body.bp-checkout-v2 .bp-checkout-v2__step-next,
-body.bp-checkout-v2 .bp-checkout-v2__step-back {
-	font-family: var(--bp-co-font);
-	font-size: 0.9375rem;
-	font-weight: 600;
-	border-radius: var(--bp-co-radius-sm);
-	padding: 0.75rem 1.25rem;
-	cursor: pointer;
-	transition: background-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-body.bp-checkout-v2 .bp-checkout-v2__step-next {
-	flex: 1 1 auto;
-	color: #fff;
-	background: var(--bp-co-accent);
-	border: none;
-	box-shadow: 0 2px 8px rgba(28, 35, 41, 0.18);
-}
-
-body.bp-checkout-v2 .bp-checkout-v2__step-next:hover {
-	background: var(--bp-co-accent-hover);
-}
-
-body.bp-checkout-v2 .bp-checkout-v2__step-back {
-	flex: 0 0 auto;
+	align-items: center;
+	gap: 0.625rem;
+	margin: 0 0 var(--bp-co-space-md);
+	font-family: var(--bp-co-font-display);
+	font-size: 1.0625rem;
+	font-weight: 700;
 	color: var(--bp-co-text);
-	background: var(--bp-co-bg);
-	border: 1px solid var(--bp-co-border-strong);
 }
 
-body.bp-checkout-v2 .bp-checkout-v2__step-back:hover {
-	background: var(--bp-co-surface);
-}
-
-body.bp-checkout-v2 .bp-checkout-v2__step-actions--payment .bp-checkout-v2__step-back {
-	flex: 1 1 auto;
+body.bp-checkout-v2 .bp-checkout-v2__section-num {
+	font-size: 0.8125rem;
+	font-weight: 700;
+	color: var(--bp-co-text-soft);
+	letter-spacing: 0.04em;
 }
 
 /* -------------------------------------------------------------------------

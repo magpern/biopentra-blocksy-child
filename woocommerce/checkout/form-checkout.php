@@ -4,17 +4,25 @@
  *
  * Based on WooCommerce core 9.4.0. Only adds structural wrappers when body.bp-checkout-v2 is present.
  *
- * Step wizard (Details / Delivery / Payment): the aside still renders the
- * exact same do_action( 'woocommerce_checkout_order_review' ) as always —
- * items table (with its shipping-method row) + #payment, completely
- * untouched WooCommerce output. checkout-v2.js physically relocates the
- * shipping row into #bp-checkout-v2-delivery-slot and #payment into
+ * Details / Delivery / Payment are three numbered sections shown all at
+ * once, in normal document order — not a hide/show wizard. The pills above
+ * them are plain in-page anchor links (scroll position, tracked by
+ * checkout-v2.js, marks the current one active) so there is no click-to-
+ * advance gate to get stuck behind and no per-step validation to fight
+ * WooCommerce's own hidden ship-to-different-address fields (an earlier,
+ * now-reverted version of this template had exactly that bug).
+ *
+ * The aside still renders the exact same
+ * do_action( 'woocommerce_checkout_order_review' ) as always — items table
+ * (with its shipping-method row) + #payment, completely untouched
+ * WooCommerce output. checkout-v2.js physically relocates the shipping row
+ * into #bp-checkout-v2-delivery-slot and #payment into
  * #bp-checkout-v2-payment-slot on load and after every WooCommerce
  * `updated_checkout` AJAX refresh (which re-renders both back into the
  * aside each time) — never clones, never re-renders, never hides the
  * originals via CSS. If JS fails to run for any reason, both remain
  * exactly where WooCommerce always puts them, in the aside, fully visible
- * and usable — checkout can never get silently stuck on a step.
+ * and usable.
  *
  * @see https://woocommerce.com/document/template-structure/
  * @package WooCommerce\Templates
@@ -41,19 +49,20 @@ do_action( 'woocommerce_before_checkout_form', $checkout );
 	<div class="bp-checkout-v2__grid">
 		<div class="bp-checkout-v2__main">
 
-			<nav class="bp-checkout-v2__steps" aria-label="<?php echo esc_attr__( 'Checkout steps', 'blocksy-child' ); ?>">
-				<button type="button" class="bp-checkout-v2__step-tab is-active" data-step="details">
+			<nav class="bp-checkout-v2__steps" aria-label="<?php echo esc_attr__( 'Checkout sections', 'blocksy-child' ); ?>">
+				<a href="#bp-co-section-details" class="bp-checkout-v2__step-tab is-active" data-step="details">
 					<span class="bp-checkout-v2__step-num">1</span><?php esc_html_e( 'Details', 'blocksy-child' ); ?>
-				</button>
-				<button type="button" class="bp-checkout-v2__step-tab" data-step="delivery">
+				</a>
+				<a href="#bp-co-section-delivery" class="bp-checkout-v2__step-tab" data-step="delivery">
 					<span class="bp-checkout-v2__step-num">2</span><?php esc_html_e( 'Delivery', 'blocksy-child' ); ?>
-				</button>
-				<button type="button" class="bp-checkout-v2__step-tab" data-step="payment">
+				</a>
+				<a href="#bp-co-section-payment" class="bp-checkout-v2__step-tab" data-step="payment">
 					<span class="bp-checkout-v2__step-num">3</span><?php esc_html_e( 'Payment', 'blocksy-child' ); ?>
-				</button>
+				</a>
 			</nav>
 
-			<div class="bp-checkout-v2__step-panel is-active" data-step="details">
+			<section class="bp-checkout-v2__section" id="bp-co-section-details" data-step="details">
+				<h2 class="bp-checkout-v2__section-heading"><span class="bp-checkout-v2__section-num">01</span><?php esc_html_e( 'Where it\'s going', 'blocksy-child' ); ?></h2>
 	<?php endif; ?>
 
 	<?php if ( $checkout->get_checkout_fields() ) : ?>
@@ -75,29 +84,21 @@ do_action( 'woocommerce_before_checkout_form', $checkout );
 	<?php endif; ?>
 
 	<?php if ( $use_v2_layout ) : ?>
-				<div class="bp-checkout-v2__step-actions">
-					<button type="button" class="bp-checkout-v2__step-next" data-next="delivery"><?php esc_html_e( 'Continue to delivery', 'blocksy-child' ); ?></button>
-				</div>
-			</div><!-- step: details -->
+			</section><!-- section: details -->
 
-			<div class="bp-checkout-v2__step-panel" data-step="delivery" hidden>
+			<section class="bp-checkout-v2__section" id="bp-co-section-delivery" data-step="delivery">
+				<h2 class="bp-checkout-v2__section-heading"><span class="bp-checkout-v2__section-num">02</span><?php esc_html_e( 'How it travels', 'blocksy-child' ); ?></h2>
 				<table class="bp-checkout-v2__delivery-slot" id="bp-checkout-v2-delivery-slot" aria-live="polite"><tbody>
 					<tr class="bp-checkout-v2__delivery-placeholder">
-						<td><?php esc_html_e( 'Enter your delivery details first — options appear here once your address is known.', 'blocksy-child' ); ?></td>
+						<td><?php esc_html_e( 'Enter your delivery details above — options appear here once your address is known.', 'blocksy-child' ); ?></td>
 					</tr>
 				</tbody></table>
-				<div class="bp-checkout-v2__step-actions">
-					<button type="button" class="bp-checkout-v2__step-back" data-back="details"><?php esc_html_e( 'Back', 'blocksy-child' ); ?></button>
-					<button type="button" class="bp-checkout-v2__step-next" data-next="payment"><?php esc_html_e( 'Continue to payment', 'blocksy-child' ); ?></button>
-				</div>
-			</div><!-- step: delivery -->
+			</section><!-- section: delivery -->
 
-			<div class="bp-checkout-v2__step-panel" data-step="payment" hidden>
+			<section class="bp-checkout-v2__section" id="bp-co-section-payment" data-step="payment">
+				<h2 class="bp-checkout-v2__section-heading"><span class="bp-checkout-v2__section-num">03</span><?php esc_html_e( 'How you pay', 'blocksy-child' ); ?></h2>
 				<div id="bp-checkout-v2-payment-slot" aria-live="polite"></div>
-				<div class="bp-checkout-v2__step-actions bp-checkout-v2__step-actions--payment">
-					<button type="button" class="bp-checkout-v2__step-back" data-back="delivery"><?php esc_html_e( 'Back', 'blocksy-child' ); ?></button>
-				</div>
-			</div><!-- step: payment -->
+			</section><!-- section: payment -->
 
 		</div><!-- .bp-checkout-v2__main -->
 
