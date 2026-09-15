@@ -27,8 +27,10 @@ if ( defined( 'PRIVATE_UPDATE_SERVER' ) && PRIVATE_UPDATE_SERVER ) {
 
 require_once BLOCKSY_CHILD_DIR . '/inc/checkout-v2/class-checkout-v2.php';
 require_once BLOCKSY_CHILD_DIR . '/inc/pdp-sticky-bar/class-pdp-sticky-bar.php';
+require_once BLOCKSY_CHILD_DIR . '/inc/my-account-v2/class-my-account-v2.php';
 
 Blocksy_Child_Checkout_V2::init();
+Blocksy_Child_My_Account_V2::init();
 
 /**
  * Milestone D1/D2A — PDP gallery + layout assets.

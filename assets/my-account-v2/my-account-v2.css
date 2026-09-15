@@ -1,0 +1,275 @@
+/**
+ * BioPentra My Account v2 — Scandinavian biotech / pharma presentation.
+ * Scoped to body.bp-my-account-v2. Does not modify WooCommerce behavior.
+ */
+
+body.bp-my-account-v2 {
+	--bp-ma-bg: #ffffff;
+	--bp-ma-panel-bg: #f2f6f5;
+	--bp-ma-surface: #fafbfc;
+	--bp-ma-text: #1c2329;
+	--bp-ma-text-muted: #5c6770;
+	--bp-ma-text-soft: #8a939b;
+	--bp-ma-border: #e4e8eb;
+	--bp-ma-accent: #1c2329;
+	--bp-ma-accent-hover: #2f3a45;
+	--bp-ma-focus: rgba(28, 35, 41, 0.12);
+	--bp-ma-check: #2f6f5e;
+	--bp-ma-shadow: 0 1px 2px rgba(28, 35, 41, 0.04), 0 4px 16px rgba(28, 35, 41, 0.06);
+	--bp-ma-radius: 18px;
+	--bp-ma-radius-sm: 8px;
+	--bp-ma-space-xs: 0.375rem;
+	--bp-ma-space-sm: 0.75rem;
+	--bp-ma-space-md: 1.25rem;
+	--bp-ma-space-lg: 2rem;
+	--bp-ma-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+	--bph-wc-accent: var(--bp-ma-accent);
+	--bph-wc-accent-hover: var(--bp-ma-accent-hover);
+	background: var(--bp-ma-bg);
+	color: var(--bp-ma-text);
+}
+
+body.bp-my-account-v2 .entry-content,
+body.bp-my-account-v2 .ct-container {
+	padding-top: var(--bp-ma-space-md);
+	padding-bottom: var(--bp-ma-space-lg);
+}
+
+body.bp-my-account-v2 .woocommerce-notices-wrapper:not(:empty) {
+	max-width: 1100px;
+	margin: 0 auto var(--bp-ma-space-md);
+}
+
+/* -------------------------------------------------------------------------
+   Split layout
+   ------------------------------------------------------------------------- */
+.bp-ma-v2 {
+	display: grid;
+	grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+	gap: var(--bp-ma-space-lg);
+	max-width: 1100px;
+	margin: 0 auto;
+	align-items: stretch;
+	font-family: var(--bp-ma-font);
+}
+
+@media (max-width: 782px) {
+	.bp-ma-v2 {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   Marketing panel
+   ------------------------------------------------------------------------- */
+.bp-ma-v2__panel {
+	background: var(--bp-ma-panel-bg);
+	border-radius: var(--bp-ma-radius);
+	padding: var(--bp-ma-space-lg);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.bp-ma-v2__logo {
+	max-height: 32px;
+	width: auto;
+	margin-bottom: var(--bp-ma-space-lg);
+}
+
+.bp-ma-v2__logo--text {
+	display: inline-block;
+	font-weight: 700;
+	font-size: 1.125rem;
+	letter-spacing: -0.01em;
+}
+
+.bp-ma-v2__eyebrow {
+	margin: 0 0 var(--bp-ma-space-xs);
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--bp-ma-text-muted);
+}
+
+.bp-ma-v2__heading {
+	margin: 0 0 var(--bp-ma-space-md);
+	font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+	line-height: 1.15;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	color: var(--bp-ma-text);
+}
+
+.bp-ma-v2__benefits {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: var(--bp-ma-space-sm);
+}
+
+.bp-ma-v2__benefits li {
+	position: relative;
+	padding-left: 1.75rem;
+	font-size: 0.9375rem;
+	line-height: 1.4;
+	color: var(--bp-ma-text-muted);
+}
+
+.bp-ma-v2__benefits li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0.05em;
+	width: 1.125rem;
+	height: 1.125rem;
+	border-radius: 50%;
+	background: var(--bp-ma-check);
+	-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23fff' d='M13.5 4.5 6.5 11.5 3 8l1-1 2.5 2.5 6-6z'/%3E%3C/svg%3E") no-repeat center / 60%;
+	mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23fff' d='M13.5 4.5 6.5 11.5 3 8l1-1 2.5 2.5 6-6z'/%3E%3C/svg%3E") no-repeat center / 60%;
+}
+
+/* -------------------------------------------------------------------------
+   Auth card
+   ------------------------------------------------------------------------- */
+.bp-ma-v2__card {
+	background: var(--bp-ma-bg);
+	border: 1px solid var(--bp-ma-border);
+	border-radius: var(--bp-ma-radius);
+	box-shadow: var(--bp-ma-shadow);
+	padding: var(--bp-ma-space-lg);
+}
+
+.bp-ma-v2__tabs {
+	display: flex;
+	gap: var(--bp-ma-space-xs);
+	background: var(--bp-ma-surface);
+	border: 1px solid var(--bp-ma-border);
+	border-radius: var(--bp-ma-radius-sm);
+	padding: 4px;
+	margin-bottom: var(--bp-ma-space-md);
+}
+
+.bp-ma-v2__tab {
+	flex: 1 1 0;
+	appearance: none;
+	border: 0;
+	background: transparent;
+	border-radius: calc(var(--bp-ma-radius-sm) - 2px);
+	padding: 0.5rem 0.75rem;
+	font-family: var(--bp-ma-font);
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--bp-ma-text-muted);
+	cursor: pointer;
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.bp-ma-v2__tab.is-active {
+	background: var(--bp-ma-bg);
+	color: var(--bp-ma-text);
+	box-shadow: var(--bp-ma-shadow);
+}
+
+.bp-ma-v2__tab:focus-visible {
+	outline: 2px solid var(--bp-ma-focus);
+	outline-offset: 2px;
+}
+
+.bp-ma-v2__pane {
+	display: none;
+}
+
+.bp-ma-v2__pane.is-active {
+	display: block;
+}
+
+.bp-ma-v2__pane-title {
+	margin: 0 0 var(--bp-ma-space-md);
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--bp-ma-text);
+}
+
+/* -------------------------------------------------------------------------
+   Form fields — reuse WooCommerce's own classes, just restyle
+   ------------------------------------------------------------------------- */
+.bp-ma-v2__card .woocommerce-form-row {
+	margin-bottom: var(--bp-ma-space-md);
+}
+
+.bp-ma-v2__card label {
+	display: block;
+	margin-bottom: var(--bp-ma-space-xs);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--bp-ma-text);
+}
+
+.bp-ma-v2__card .input-text {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.6875rem 0.875rem;
+	border: 1px solid var(--bp-ma-border);
+	border-radius: var(--bp-ma-radius-sm);
+	font-family: var(--bp-ma-font);
+	font-size: 0.9375rem;
+	color: var(--bp-ma-text);
+	background: var(--bp-ma-bg);
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bp-ma-v2__card .input-text:focus {
+	outline: none;
+	border-color: var(--bp-ma-accent);
+	box-shadow: 0 0 0 3px var(--bp-ma-focus);
+}
+
+.bp-ma-v2__card .woocommerce-form-login__rememberme {
+	display: flex;
+	align-items: center;
+	gap: var(--bp-ma-space-xs);
+	font-size: 0.875rem;
+	color: var(--bp-ma-text-muted);
+	font-weight: 400;
+}
+
+.bp-ma-v2__card button[type="submit"] {
+	width: 100%;
+	border: 0;
+	border-radius: var(--bp-ma-radius-sm);
+	padding: 0.75rem 1rem;
+	background: var(--bp-ma-accent);
+	color: #fff;
+	font-family: var(--bp-ma-font);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.15s ease;
+}
+
+.bp-ma-v2__card button[type="submit"]:hover {
+	background: var(--bp-ma-accent-hover);
+}
+
+.bp-ma-v2__card .woocommerce-LostPassword {
+	margin: var(--bp-ma-space-sm) 0 0;
+	font-size: 0.875rem;
+	text-align: center;
+}
+
+.bp-ma-v2__card .woocommerce-LostPassword a {
+	color: var(--bp-ma-text-muted);
+	text-decoration: underline;
+}
+
+/* Clear the floating currency-switcher pill (fixed to the viewport's left
+   edge), which otherwise sits on top of the panel heading at this width. */
+@media (max-width: 782px) {
+	.bp-ma-v2__panel {
+		padding-left: calc(var(--bp-ma-space-lg) + 3.25rem);
+	}
+}
